@@ -1,10 +1,28 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors')
 
 const app = express();
 const port = process.env.PORT || 7070;
 const router = require('./router');
+
+app.set('views', './app/views');
+app.set('view engine', 'ejs');
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+	session({
+		secret: 'second life est un jeu trop cool',
+		resave: false,
+		saveUninitialized: true,
+		cookie: {maxAge: 24 * 60 * 60 * 1000},
+	})
+);
+
+const publicPath = __dirname + '/public';
+app.use(express.static(publicPath));
 
 // CORS
 app.use((req, res, next) => {
