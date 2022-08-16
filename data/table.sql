@@ -94,8 +94,3 @@ CREATE TABLE "staff" (
 );
 
 COMMIT;
-
-
-
-
-
