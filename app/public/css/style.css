@@ -86,3 +86,22 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+/***************************************Page Home ********************************/
+
+.components{
+    background-color: blanchedalmond;
+    padding: 1rem;
+    height:500px;
+}
+
+.header-menu{
+    margin-left: 10px;
+}
+
+.li-menu{
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    color:pink;
+}

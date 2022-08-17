@@ -2,7 +2,7 @@ const homeController = {
     home: async (request, response) => {
         try{
             //if(request.session.user){
-            //    response.render('home');
+                response.render('home');
             //}
         }
         catch(error){

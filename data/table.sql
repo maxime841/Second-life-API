@@ -16,6 +16,7 @@ CREATE TABLE "land" (
 CREATE TABLE "picture_land" (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY, -- ID default
     name TEXT, -- Nom de la photo
+    url
     land_id INT REFERENCES "land" (id) ON DELETE CASCADE
 );
 
