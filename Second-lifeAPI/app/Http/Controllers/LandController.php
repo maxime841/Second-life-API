@@ -47,7 +47,8 @@ class LandController extends Controller
      */
     public function show($id)
     {
-        //
+        $land =  Land::find($id);
+        return response()->json(['land' => $land]);
     }
 
     /**
