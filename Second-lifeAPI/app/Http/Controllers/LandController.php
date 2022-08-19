@@ -36,7 +36,8 @@ class LandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $land = Land::create($request->all());
+        return redirect()->route('lands.index', [$land]);
     }
 
     /**
