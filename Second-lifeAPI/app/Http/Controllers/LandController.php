@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Land;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LandController extends Controller
 {
@@ -60,7 +61,8 @@ class LandController extends Controller
      */
     public function edit($id)
     {
-        //
+        $land = Land::findOrFail($id);
+         return response()->json(['land' => $land]);
     }
 
     /**
@@ -72,7 +74,19 @@ class LandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $landId = Land::find($id);
+        $landId->update([
+            'name' => $request->name,
+            'owner' => $request->owner,
+            'presentation' => $request->presentation,
+            'description' => $request->description,
+            'group' => $request->group,
+            'prims' => $request->prims,
+            'remaining_prims' => $request->remaining_prims,
+            'date_buy' => $request->date_buy,
+        ]);
+
+        return response()->json(['land' => $landId]);
     }
 
     /**

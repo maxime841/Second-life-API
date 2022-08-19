@@ -19,10 +19,5 @@ class Land extends Model
         'remaining_prims',
         'date_buy',
         'picture',
-    ]; 
-
-    public function picture()
-    {
-        return $this->belongsTo(picture::class);
-    }   
+    ];  
 }
