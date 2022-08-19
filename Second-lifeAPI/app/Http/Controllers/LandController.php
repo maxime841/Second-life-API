@@ -97,6 +97,7 @@ class LandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $landId = Land::find($id);
+        $landId->delete(); 
     }
 }
