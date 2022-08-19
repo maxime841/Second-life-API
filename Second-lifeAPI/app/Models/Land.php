@@ -9,8 +9,20 @@ class Land extends Model
 {
     use HasFactory;
 
-    public function pictureland()
+    protected $fillable = [
+        'name',
+        'owner',
+        'presentation',
+        'description',
+        'group',
+        'prims',
+        'remaining_prims',
+        'date_buy',
+        'picture',
+    ]; 
+
+    public function picture()
     {
-        return $this->belongsTo(pictureland::class);
-    }
+        return $this->belongsTo(picture::class);
+    }   
 }

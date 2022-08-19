@@ -16,14 +16,15 @@ return new class extends Migration
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('owner');
+            $table->string('owner')->nullable();
             $table->string('presentation');
             $table->string('description');
             $table->string('group');
-            $table->int('prims');
-            $table->int('remaining_prims');
-            $table->string('date_buy');
-            $table->string('picture');
+            $table->integer('prims');
+            $table->integer('remaining_prims');
+            $table->string('date_buy')->nullable();
+            $table->string('picture')->nullable();
+            
             $table->timestamps();
         });
     }

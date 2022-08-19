@@ -16,13 +16,15 @@ return new class extends Migration
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('owner');
+            $table->string('owner')->nullable();
             $table->string('presentation');
-            $table->int('prims');
-            $table->int('remaining_house_prims');
-            $table->string('date_start_rent');
-            $table->string('date_end_rent');
-            $table->string('picture');
+            $table->integer('prims');
+            $table->integer('remaining_house_prims');
+            $table->string('date_start_rent')->nullable();
+            $table->string('date_end_rent')->nullable();
+            $table->string('picture')->nullable();
+
+            $table->foreignId('tenants_id')->constrained();
             $table->timestamps();
         });
     }

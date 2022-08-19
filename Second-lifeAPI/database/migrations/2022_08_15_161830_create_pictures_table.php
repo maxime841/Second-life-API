@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('picturelands', function (Blueprint $table) {
+        Schema::create('pictures', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('url_picture');
+            $table->string('favori');
+
+            $table->integer('affichable_id');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('picturelands');
+        Schema::dropIfExists('pictures');
     }
 };

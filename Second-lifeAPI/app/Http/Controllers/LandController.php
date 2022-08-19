@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Land;
 use Illuminate\Http\Request;
 
 class LandController extends Controller
@@ -13,7 +14,8 @@ class LandController extends Controller
      */
     public function index()
     {
-        //
+       $land = Land::all();
+       return response()->json(['land' => $land]);
     }
 
     /**

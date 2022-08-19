@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Picturehouse>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Picture>
  */
-class PicturehouseFactory extends Factory
+class PictureFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class PicturehouseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'url_picture' => fake()->url_picture(),
         ];
     }
 }

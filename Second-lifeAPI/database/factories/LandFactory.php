@@ -17,7 +17,14 @@ class LandFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'owner' =>fake()->name(),
+            'presentation' =>fake()->text(),
+            'description' =>fake()->text(),
+            'group' => fake()->text(),
+            'prims' => fake()->numberBetween(0,1000000),
+            'remaining_prims' => fake()->numberBetween(0,1000000),
+            'date_buy' => fake()->dateTime(),
         ];
     }
 }
