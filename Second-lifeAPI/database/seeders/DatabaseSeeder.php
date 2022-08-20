@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         //Creation des terrains
         $this->call([
             LandSeeder::class,
+            TenantSeeder::class,
+            HouseSeeder::class,
         ]);
     }
 }

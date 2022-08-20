@@ -14,122 +14,13 @@ class Picture extends Model
         'picture_url',
         'favori',
     ]; 
-
-        /**
-     * Get the parent affichable model (land or pictureland or house or picturehouse or other).
+    as
+    /**
+     * Get the parent picturable model (land or pictureland or house or picturehouse or other).
      */
-    public function affichable()
+    public function picturable()
     {
         return $this->morphTo();
     }
 }
- 
-class Land extends Model
-{
-    /**
-     * Get all of the post's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
- 
-class Pictureland extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
 
-class House extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Picturehouse extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Dj extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Picturedj extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Dancer extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Picturedancer extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Party extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}
-
-class Club extends Model
-{
-    /**
-     * Get all of the video's comments.
-     */
-    public function affiche()
-    {
-        return $this->morphMany(Picture::class, 'affichable');
-    }
-}

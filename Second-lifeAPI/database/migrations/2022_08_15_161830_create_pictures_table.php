@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url_picture');
-            $table->string('favori');
+            $table->boolean('favori')->default('false');
 
-            $table->integer('affichable_id');
+            $table->integer('picturable_id');
             $table->timestamps();
         });
     }

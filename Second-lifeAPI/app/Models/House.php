@@ -9,10 +9,15 @@ class House extends Model
 {
     use HasFactory;
 
-    public function picturehouse()
-    {
-        return $this->belongsTo(picturehouse::class);
-    }
+   protected $fillable = [
+    'name',
+    'owner',
+    'presentation',
+    'prims',
+    'remaining_house_prims',
+    'date_start_rent',
+    'date_end_rent',
+   ];
 
     public function tenants()
     {

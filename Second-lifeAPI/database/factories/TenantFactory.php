@@ -17,7 +17,8 @@ class TenantFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'rent' =>fake()->numberBetween(0,1000000),
         ];
     }
 }

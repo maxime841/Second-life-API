@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('prims');
             $table->integer('remaining_prims');
             $table->string('date_buy')->nullable();
-            $table->string('picture')->nullable();
             
             $table->timestamps();
         });
