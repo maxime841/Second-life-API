@@ -14,7 +14,7 @@ class Picture extends Model
         'picture_url',
         'favori',
     ]; 
-    as
+    
     /**
      * Get the parent picturable model (land or pictureland or house or picturehouse or other).
      */

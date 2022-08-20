@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
+use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -25,9 +26,10 @@ class LandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function upload(Request $request)
     {
-        //
+        $pictureLands = Picture::create($request->all());
+        return response()->json(['land' => $pictureLands]);
     }
 
     /**

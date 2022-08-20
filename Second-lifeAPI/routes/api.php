@@ -22,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('/lands', LandController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
+
+Route::post('/uploadLand', LandController::class)->only(
+    'upload'
+);
