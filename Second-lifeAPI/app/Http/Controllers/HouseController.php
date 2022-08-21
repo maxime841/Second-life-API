@@ -60,7 +60,8 @@ class HouseController extends Controller
      */
     public function edit($id)
     {
-        //
+        $house = House::findOrFail($id);
+        return response()->json(['house' => $house]);
     }
 
     /**
@@ -72,7 +73,18 @@ class HouseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $houseId = House::find($id);
+        $houseId->update([
+            'name' => $request->name,
+            'owner' => $request->owner,
+            'presentation' => $request->presentation,
+            'description' => $request->description,
+            'group' => $request->group,
+            'prims' => $request->prims,
+            'remaining_prims' => $request->remaining_prims,
+        ]);
+
+        return response()->json(['house' => $houseId]);
     }
 
     /**
