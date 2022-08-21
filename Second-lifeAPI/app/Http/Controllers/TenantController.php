@@ -48,7 +48,8 @@ class TenantController extends Controller
      */
     public function show($id)
     {
-        //
+        $tenant =  Tenant::find($id);
+        return response()->json(['tenant' => $tenant]);
     }
 
     /**
