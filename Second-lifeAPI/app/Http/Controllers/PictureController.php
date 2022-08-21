@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 
 class PictureController extends Controller
@@ -77,6 +78,8 @@ class PictureController extends Controller
      */
     public function store(Request $request)
     {
+        //Storage::disk('public')->put('image', $request->file('upload'));
+       // die();
         $picture = Picture::create($request->all());
         return response()->json(['picture' => $picture]);
     }

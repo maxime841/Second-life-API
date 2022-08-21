@@ -3,8 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandController;
-use App\Http\Controllers\PictureController;
 use App\Http\Controllers\HouseController;
+use App\Http\Controllers\TenantController;
+use App\Http\Controllers\PictureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +47,10 @@ Route::post('/upload', [PictureController::class, 'store']);
 
 //Route crud house
 Route::resource('/houses', HouseController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
+//Route crud tenant
+Route::resource('/tenants', TenantController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);

@@ -15,7 +15,7 @@ class TenantSeeder extends Seeder
     public function run()
     {
         \App\Models\Tenant::factory()->create([
-            'name' => 'Le Domaine de Valombreuse',
+            'name' => 'Madmax3184',
             'rent' => '1500',  
         ]);
     }
