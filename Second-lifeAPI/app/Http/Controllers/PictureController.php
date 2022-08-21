@@ -14,54 +14,49 @@ class PictureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index_land()
     {
         $pictures = Picture::all();
-
         $picture_filtered_land = $pictures->filter(function($value){
-                return $value->tag === 'land';
+            return $value->tag === 'land';
         });
-        return response()->json(['land' => $picture_filtered_land]);
-       
-        /*switch($pictures){
-            case  $pictures->tag  === 'land':
-                Log::channel('stderr')->info('tag_land', [$pictures]);
-               // $picture_filtered_land = $pictures->filter(function($value){
-                //    return $value->tag === 'land' && $value->picturable_id === 'land_id';
-                //});
-                $picture_filtered_land = Picture::all();
-                Log::channel('stderr')->info('pictures_land', [$picture_filtered_land]); 
-                return response()->json(['land' => $picture_filtered_land]);
-                break;
+        return response()->json(['land' => $picture_filtered_land]); 
+    }
 
-            /*case $pictures->tag === 'house':
-                $picture_filtered_club = $pictures->filter(function($value){
-                    return $value->tag === 'club' && $value->picturable_id === 'club_id';
-                });
-                return response()->json(['club' => $picture_filtered_club]);
-                break; 
+    public function index_house()
+    {
+        $pictures = Picture::all();
+        $picture_filtered_house = $pictures->filter(function($value){
+            return $value->tag === 'house';
+        });
+        return response()->json(['house' => $picture_filtered_house]); 
+    }
 
-            case $pictures->tag === 'club':
-                $picture_filtered_club = $pictures->filter(function($value){
-                    return $value->tag === 'club' && $value->picturable_id === 'club_id';
-                });
-                return response()->json(['club' => $picture_filtered_club]);
-                break;
+    public function index_club()
+    {
+        $pictures = Picture::all();
+        $picture_filtered_club = $pictures->filter(function($value){
+            return $value->tag === 'club';
+        });
+        return response()->json(['club' => $picture_filtered_club]); 
+    }
 
-            case $pictures->tag === 'dj':
-                $picture_filtered_dj = $pictures->filter(function($value){
-                    return $value->tag === 'dj' && $value->picturable_id === 'dj_id';
-                });
-                return response()->json(['dj' => $picture_filtered_dj]);
-                break;
+    public function index_dj()
+    {
+        $pictures = Picture::all();
+        $picture_filtered_dj = $pictures->filter(function($value){
+            return $value->tag === 'dj';
+        });
+        return response()->json(['dj' => $picture_filtered_dj]); 
+    }
 
-            case $pictures->tag === 'dancer':
-                $picture_filtered_dancer = $pictures->filter(function($value){
-                    return $value->tag === 'dancer' && $value->picturable_id === 'dancer_id';
-                });
-                return response()->json(['dancer' => $picture_filtered_dancer]);
-                break;
-        }*/
+    public function index_dancer()
+    {
+        $pictures = Picture::all();
+        $picture_filtered_dancer = $pictures->filter(function($value){
+            return $value->tag === 'dancer';
+        });
+        return response()->json(['land' => $picture_filtered_dancer]); 
     }
 
     /**
