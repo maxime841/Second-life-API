@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('date_start_rent')->nullable();
             $table->string('date_end_rent')->nullable();
 
-            $table->foreignId('tenant_id')->constrained();
+            $table->integer('tenant_id')->nullable();
             $table->timestamps();
         });
     }

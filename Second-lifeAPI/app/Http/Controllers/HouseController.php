@@ -36,7 +36,8 @@ class HouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $house = House::create($request->all());
+        return redirect()->route('houses.index', [$house]);
     }
 
     /**
