@@ -95,6 +95,7 @@ class HouseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $houseId = House::find($id);
+        $houseId->delete();
     }
 }
