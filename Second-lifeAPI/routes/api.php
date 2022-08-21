@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandController;
+use App\Http\Controllers\PictureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,5 @@ Route::resource('/lands', LandController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
 
-Route::post('/uploadLand', LandController::class)->only(
-    'upload'
-);
+Route::get('/upload', [PictureController::class, 'index']);
+Route::post('/upload', [PictureController::class, 'store']);

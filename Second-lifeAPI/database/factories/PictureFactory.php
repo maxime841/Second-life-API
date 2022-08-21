@@ -18,7 +18,9 @@ class PictureFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'url_picture' => fake()->url_picture(),
+            'picture_url' => fake()->string(),
+            'favori' => fake()->boolean(),
+            'tag' => fake()->string(),
         ];
     }
 }

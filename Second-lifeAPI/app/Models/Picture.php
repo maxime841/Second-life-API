@@ -13,6 +13,7 @@ class Picture extends Model
         'name',
         'picture_url',
         'favori',
+        'tag',
     ]; 
     
     /**

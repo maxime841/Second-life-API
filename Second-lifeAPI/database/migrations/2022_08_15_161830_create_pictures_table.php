@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('pictures', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('url_picture');
+            $table->string('picture_url');
             $table->boolean('favori')->default('false');
+            $table->string('tag');
 
-            $table->integer('picturable_id');
+            $table->integer('picturable_id')->nullable();
             $table->timestamps();
         });
     }
