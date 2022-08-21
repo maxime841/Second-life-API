@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
+use App\Models\Picture;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LandController extends Controller
@@ -16,8 +18,12 @@ class LandController extends Controller
     public function index()
     {
        $land = Land::all();
-      
-    return response()->json(['land' => $land]);
+       $picture = DB::table('pictures')
+        ->where('favori', '=', 'true')
+        ->where('tag', '=', 'land')
+        ->get();
+        
+    return response()->json(['land' => $land, $picture]);
     
     }
 

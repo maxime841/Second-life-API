@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\House;
+use App\Models\Picture;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HouseController extends Controller
 {
@@ -15,7 +17,13 @@ class HouseController extends Controller
     public function index()
     {
         $house = House::all();
-        return response()->json(['house', $house]);
+        $picture = DB::table('pictures')
+        ->where('favori', '=', 'true')
+        ->where('tag', '=', 'house')
+        ->get();
+        
+        return response()->json(['house', $house, $picture]);
+        
     }
 
     /**
