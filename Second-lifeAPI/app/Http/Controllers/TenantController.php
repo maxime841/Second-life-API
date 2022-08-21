@@ -72,7 +72,13 @@ class TenantController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $tenantId = Tenant::find($id);
+        $tenantId->update([
+            'name' => $request->name,
+            'rent' => $request->rent,
+        ]);
+
+        return response()->json(['tenant' => $tenantId]);
     }
 
     /**
