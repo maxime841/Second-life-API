@@ -36,7 +36,8 @@ class TenantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tenant = Tenant::create($request->all());
+        return redirect()->route('tenants.index', [$tenant]);
     }
 
     /**
