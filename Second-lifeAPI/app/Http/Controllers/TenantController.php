@@ -89,6 +89,7 @@ class TenantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tenantId = Tenant::find($id);
+        $tenantId->delete();
     }
 }
