@@ -22,6 +22,7 @@ class HouseSeeder extends Seeder
             'remaining_house_prims' => '10',
             'date_start_rent' => '2022-08-19', 
             'date_end_rent' => '2022-08-25',
+            'tenant_id' => '1',
         ]);
     }
 }

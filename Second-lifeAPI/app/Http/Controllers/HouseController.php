@@ -15,7 +15,7 @@ class HouseController extends Controller
     public function index()
     {
         $house = House::all();
-        return response()->json('house', $house);
+        return response()->json(['house', $house]);
     }
 
     /**
@@ -47,7 +47,8 @@ class HouseController extends Controller
      */
     public function show($id)
     {
-        //
+        $house =  House::find($id);
+        return response()->json(['house' => $house]);
     }
 
     /**

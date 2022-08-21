@@ -21,6 +21,6 @@ class House extends Model
 
     public function tenants()
     {
-        return $this->hasMany(Tenants::class);
+        return $this->hasMany(Tenant::class);
     }
 }
