@@ -23,7 +23,7 @@ class LandController extends Controller
         ->where('tag', '=', 'land')
         ->get();
         
-    return response()->json(['land' => $land, $picture]);
+    return response()->json(['land' => $land, 'picture' => $picture]);
     
     }
 
@@ -58,7 +58,10 @@ class LandController extends Controller
     public function show($id)
     {
         $land =  Land::find($id);
-        return response()->json(['land' => $land]);
+        $picture = DB::table('pictures')
+        ->where('tag', '=', 'land')
+        ->get();
+        return response()->json(['land' => $land, 'picture' => $picture]);
     }
 
     /**
