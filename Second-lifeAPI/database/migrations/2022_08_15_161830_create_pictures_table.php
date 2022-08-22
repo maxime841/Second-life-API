@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('tag');
 
             $table->integer('picturable_id')->nullable();
+            $table->string('picturable_type')->nullable();
             $table->timestamps();
         });
     }

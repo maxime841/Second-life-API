@@ -24,5 +24,7 @@ class LandSeeder extends Seeder
             'remaining_prims' => '1500',
             'date_buy' => '2022-04-15',  
         ]);
+
+        \App\Models\Land::factory(5)->create();
     }
 }

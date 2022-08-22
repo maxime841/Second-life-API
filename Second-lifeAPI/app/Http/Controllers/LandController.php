@@ -17,14 +17,15 @@ class LandController extends Controller
      */
     public function index()
     {
-       $land = Land::all();
-       $picture = DB::table('pictures')
-        ->where('favori', '=', 'true')
-        ->where('tag', '=', 'land')
-        ->get();
-        
-    return response()->json(['land' => $land, 'picture' => $picture]);
-    
+       $lands = Land::all();
+       foreach ($lands as $land) {
+        foreach ($land->pictures as $picture){
+           if($picture->favori == true) {
+            $land->picture = $picture;
+           }
+       }
+    }     
+    return response()->json(['land' => $lands]);
     }
 
     /**
@@ -46,7 +47,11 @@ class LandController extends Controller
     public function store(Request $request)
     {
         $land = Land::create($request->all());
-        return redirect()->route('lands.index', [$land]);
+        foreach ($land->pictures as $picture){
+            $picture = $picture->picturable;
+            $picture->save();
+        }
+        return redirect()->route('lands.index', [$land, $picture]); 
     }
 
     /**
@@ -58,9 +63,12 @@ class LandController extends Controller
     public function show($id)
     {
         $land =  Land::find($id);
+        foreach ( $land->pictures as $picture) {
         $picture = DB::table('pictures')
         ->where('tag', '=', 'land')
+        ->where('picturable_id', '=', 'land_id')
         ->get();
+        }
         return response()->json(['land' => $land, 'picture' => $picture]);
     }
 

@@ -18,6 +18,7 @@ class Land extends Model
         'prims',
         'remaining_prims',
         'date_buy',
+        'picture',
     ]; 
     
     public function pictures()
