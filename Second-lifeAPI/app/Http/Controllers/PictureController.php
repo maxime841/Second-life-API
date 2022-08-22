@@ -79,7 +79,7 @@ class PictureController extends Controller
     public function store(Request $request)
     {
         //Storage::disk('public')->put('image', $request->file('upload'));
-       // die();
+        //die();
         $picture = Picture::create($request->all());
         return response()->json(['picture' => $picture]);
     }

@@ -24,7 +24,6 @@ class HouseFactory extends Factory
             "remaining_house_prims" => fake()->numberBetween(0, 1000000),
             "date_start_rent" => fake()->dateTime(),
             "date_end_rent" => fake()->dateTime(),
-            "tenant_id" => fake()->numberBetween(0, 1000000),
         ];
     }
 }

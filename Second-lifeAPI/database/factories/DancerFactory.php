@@ -17,7 +17,8 @@ class DancerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" =>fake()->name(),
+            "date_entrance" =>fake()->date(),
         ];
     }
 }

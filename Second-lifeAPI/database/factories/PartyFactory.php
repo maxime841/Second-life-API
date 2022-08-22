@@ -17,7 +17,9 @@ class PartyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" =>fake()->name(),
+            "owner" => fake()->name(),
+            "date_party" =>fake()->date(),
         ];
     }
 }

@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LandSeeder::class,
             TenantSeeder::class,
             HouseSeeder::class,
+            DjSeeder::class,
         ]);
     }
 }

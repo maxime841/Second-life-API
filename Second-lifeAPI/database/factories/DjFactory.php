@@ -17,7 +17,9 @@ class DjFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" => fake()->name(),
+            "style" => fake()->text(),
+            "date_entrance" =>fake()->date(),
         ];
     }
 }
