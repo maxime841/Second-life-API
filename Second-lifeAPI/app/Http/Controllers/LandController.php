@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
-use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +19,7 @@ class LandController extends Controller
        $lands = Land::all();
        foreach ($lands as $land) {
         foreach ($land->pictures as $picture){
-           if($picture->favori == true) {
+           if($picture->favori == true && $picture->picturable_id == $land->id) {
             $land->picture = $picture;
            }
        }
@@ -47,11 +46,7 @@ class LandController extends Controller
     public function store(Request $request)
     {
         $land = Land::create($request->all());
-        foreach ($land->pictures as $picture){
-            $picture = $picture->picturable;
-            $picture->save();
-        }
-        return redirect()->route('lands.index', [$land, $picture]); 
+        return redirect()->route('lands.index', [$land]); 
     }
 
     /**
@@ -63,13 +58,12 @@ class LandController extends Controller
     public function show($id)
     {
         $land =  Land::find($id);
-        foreach ( $land->pictures as $picture) {
-        $picture = DB::table('pictures')
-        ->where('tag', '=', 'land')
-        ->where('picturable_id', '=', 'land_id')
-        ->get();
+        foreach ($land->pictures as $picture){
+            if($picture->picturable_type == 'land') {
+             $land->picture = $picture;
+            }
         }
-        return response()->json(['land' => $land, 'picture' => $picture]);
+        return response()->json(['land' => $land]);
     }
 
     /**

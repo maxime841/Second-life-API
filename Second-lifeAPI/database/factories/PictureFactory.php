@@ -20,7 +20,8 @@ class PictureFactory extends Factory
             'name' => fake()->name(),
             'picture_url' => fake()->text(),
             'favori' => fake()->boolean(),
-            'picturable_type' => fake()->text(),
+            /*'picturable_type' => fake()->text(),
+            'picturable_id' => fake()->integer(),*/
         ];
     }
 }

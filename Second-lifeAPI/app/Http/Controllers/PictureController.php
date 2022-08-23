@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Land;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -83,7 +84,6 @@ class PictureController extends Controller
         //Storage::disk('public')->put('image', $request->file('upload'));
         //die();
         $picture = Picture::create($request->all());
-        
         return response()->json(['picture' => $picture]);
     }
 
