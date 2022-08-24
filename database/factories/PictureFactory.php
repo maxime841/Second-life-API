@@ -18,8 +18,8 @@ class PictureFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'picture_url' => fake()->text(),
-            'favori' => fake()->boolean(),
+            'picture_url' => fake()->imageUrl(640, 480, 'animals', true),
+            'favori' => fake()->boolean(false),
             /*'picturable_type' => fake()->text(),
             'picturable_id' => fake()->integer(),*/
         ];

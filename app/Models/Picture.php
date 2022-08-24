@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Picture extends Model
 {
@@ -13,17 +13,16 @@ class Picture extends Model
         'name',
         'picture_url',
         'favori',
-        'picturable_type',
-        'picturable_id',
-        
-    ]; 
-    
+        'pictureable_id',
+        'pictureable_type',
+
+    ];
+
     /**
-     * Get the parent picturable model (land or pictureland or house or picturehouse or other).
+     * Get the parent pictureable model (land or pictureland or house or picturehouse or other).
      */
-    public function picturable()
+    public function pictureable()
     {
         return $this->morphTo();
     }
 }
-
