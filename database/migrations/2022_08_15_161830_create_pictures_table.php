@@ -18,11 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('picture_url');
             $table->boolean('favori')->default('false');
-            $table->string('tag');
-
-            $table->integer('picturable_id')->nullable();
-            $table->string('picturable_type')->nullable();
             $table->timestamps();
+
+            $table->integer('pictureable_id')->nullable();
+            $table->string('pictureable_type')->nullable();
         });
     }
 

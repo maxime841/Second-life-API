@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Picture;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Land extends Model
 {
@@ -19,12 +20,10 @@ class Land extends Model
         'remaining_prims',
         'date_buy',
         'picture',
-    ]; 
-    
+    ];
+
     public function pictures()
     {
-        return $this->morphMany(Picture::class, 'picturable');
+        return $this->morphMany(Picture::class, 'pictureable');
     }
 }
-  
-
