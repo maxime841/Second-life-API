@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccbd816a07b206f971042295b899d1ba",
+    "content-hash": "93bed7c18c31b7af7dda8465f239739c",
     "packages": [
         {
             "name": "brick/math",
@@ -5757,6 +5757,79 @@
             "time": "2022-03-03T13:19:32+00:00"
         },
         {
+            "name": "nordcoders/laravel-service-maker",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ludoguenet/laravel-service-maker.git",
+                "reference": "e69d0ab2af06282fb536760e69ee2721591105e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ludoguenet/laravel-service-maker/zipball/e69d0ab2af06282fb536760e69ee2721591105e8",
+                "reference": "e69d0ab2af06282fb536760e69ee2721591105e8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NordCoders\\LaravelServiceMaker\\LaravelServiceMakerServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelServiceMaker": "NordCoders\\LaravelServiceMaker\\Facades\\LaravelServiceMaker"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NordCoders\\LaravelServiceMaker\\": "src",
+                    "NordCoders\\LaravelServiceMaker\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ludovic Guénet",
+                    "email": "ludovicguenet@gmx.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate services and contracts in Laravel with the artisan command",
+            "homepage": "https://github.com/nordcoders/laravel-service-maker",
+            "keywords": [
+                "laravel",
+                "laravel-service-maker",
+                "nordcoders"
+            ],
+            "support": {
+                "issues": "https://github.com/ludoguenet/laravel-service-maker/issues",
+                "source": "https://github.com/ludoguenet/laravel-service-maker/tree/v1.0.1"
+            },
+            "time": "2022-07-26T13:34:04+00:00"
+        },
+        {
             "name": "nunomaduro/collision",
             "version": "v6.2.1",
             "source": {
@@ -7861,6 +7934,65 @@
                 }
             ],
             "time": "2022-06-17T06:28:57+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/09f80fa240d44fafb1c70657c74ee44ffa929357",
+                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.0|^8.0|^9.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^5.0|^6.23|^7.0",
+                "phpunit/phpunit": "^9.4",
+                "spatie/test-time": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.12.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-28T14:29:26+00:00"
         },
         {
             "name": "theseer/tokenizer",
