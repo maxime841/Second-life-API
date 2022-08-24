@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Land;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,11 +19,9 @@ class PictureController extends Controller
     {
         $pictures = Picture::all();
         $picture_filtered_land = $pictures->filter(function($value){
-            return $value->tag === 'land';
-        });
-
-        $picturable = $pictures->picturable;
-    return response()->json(['land' => $picture_filtered_land, 'picture' => $picturable]); 
+            return $value->picturable_type === 'land';
+        });  
+    return response()->json(['land' => $picture_filtered_land]); 
     }
 
     public function index_house()
@@ -84,6 +81,7 @@ class PictureController extends Controller
         //Storage::disk('public')->put('image', $request->file('upload'));
         //die();
         $picture = Picture::create($request->all());
+        
         return response()->json(['picture' => $picture]);
     }
 
