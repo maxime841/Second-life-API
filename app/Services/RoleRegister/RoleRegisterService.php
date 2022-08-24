@@ -20,7 +20,7 @@ class RoleRegisterService implements RoleRegisterContract
         if ($idRole) {
             return Role::find($idRole);
         } else {
-            return Role::query()->where('libelle', '=', 'auth')->firstOrFail();
+            return Role::query()->where('libelle', '=', 'public')->firstOrFail();
         }
     }
 }

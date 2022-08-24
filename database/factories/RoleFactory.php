@@ -18,7 +18,7 @@ class RoleFactory extends Factory
     {
         return [
             // create one role with libelle 'root'
-            'libelle' => fake()->lexify('root')
+            //'libelle' => fake()->lexify('root')
         ];
     }
 }

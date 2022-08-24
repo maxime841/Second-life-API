@@ -54,3 +54,19 @@ Route::resource('/houses', HouseController::class)->only([
 Route::resource('/tenants', TenantController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
+
+// routes for authentication
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+// redirect on route after click email verified email
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifiedAuthEmail'])
+    ->middleware(['signed'])->name('verification.verify');
+
+// routes user connected
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
+    // routes auth
+    Route::get('auth/verified', [AuthController::class, 'verifiedAuth']);
+    Route::delete('auth/logout', [AuthController::class, 'logout']);
+});
