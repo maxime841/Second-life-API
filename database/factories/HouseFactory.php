@@ -17,9 +17,9 @@ class HouseFactory extends Factory
     public function definition()
     {
         return [
-            "name" =>fake()->name(),
+            "name" => fake()->name(),
             "owner" => fake()->name(),
-            "presentation" =>fake()->text(),
+            "presentation" => fake()->text(),
             "prims" => fake()->numberBetween(0, 1000000),
             "remaining_house_prims" => fake()->numberBetween(0, 1000000),
             "date_start_rent" => fake()->dateTime(),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\House;
 use App\Models\Picture;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,11 @@ class Land extends Model
     public function pictures()
     {
         return $this->morphMany(Picture::class, 'pictureable');
+    }
+
+    public function houses()
+    {
+        return $this->hasMany(House::class);
     }
 
     /**

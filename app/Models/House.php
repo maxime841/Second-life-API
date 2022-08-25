@@ -23,4 +23,9 @@ class House extends Model
     {
         return $this->belongsTo(Tenant::class);
     }
+
+    public function land()
+    {
+        return $this->belongsTo(Land::class);
+    }
 }

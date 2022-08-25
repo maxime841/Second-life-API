@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\House;
 use App\Models\Land;
 use App\Models\Role;
 use App\Models\User;
@@ -132,5 +133,9 @@ class DatabaseSeeder extends Seeder
         $tenants = Tenant::factory()->count(10)->create();
 
         // create houses
+        foreach ($lands as $land) {
+            $houses = House::factory()->count(10)->create();
+            $land->houses()->saveMany($houses);
+        }
     }
 }
