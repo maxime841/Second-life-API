@@ -101,6 +101,7 @@ class ClubController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $clubId = Club::find($id);
+        $clubId->delete();
     }
 }
