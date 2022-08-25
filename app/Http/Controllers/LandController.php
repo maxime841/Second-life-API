@@ -6,8 +6,10 @@ use App\Models\Land;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\LandCreateRequest;
 use App\Http\Requests\LandUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 class LandController extends Controller
 {
@@ -62,7 +64,7 @@ class LandController extends Controller
         // for image upload on create land
         if ($request->image) {
             $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
+            $extension = $file->extension();
             $nameImage = $land->id . 'land' . uniqid();
             $nameImageForPath = $land->id . 'land' . uniqid() . '.' . $extension;
 
@@ -108,6 +110,41 @@ class LandController extends Controller
     }
 
     /**
+     * upload all images
+     * * 200 [land]
+     * * 401 [message]
+     * * 422 [message, errors=>nameinput]
+     *
+     * @return JsonResponse
+     */
+    public function uploadFiles(Request $request)
+    {
+        $request->validate(['images' => 'required']);
+        $land = Land::find($request->id);
+
+        foreach ($request->file('images') as $image) {
+            $extension = $image->extension();
+            $nameImage = $land->id . 'land' . uniqid() . '.' . $extension;
+
+            $path = $image->storeAs(
+                'public/images/lands',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => true,
+            ]);
+
+            $land->pictures()->save($picture);
+        }
+
+        $land->pictures;
+        return response()->json(['land' => $land]);
+    }
+
+    /**
      * delete land.
      * * 200 [message]
      * * 401 [message]
@@ -118,6 +155,9 @@ class LandController extends Controller
     public function delete(Request $request): JsonResponse
     {
         $land = Land::find($request->id);
+        foreach ($land->pictures as $picture) {
+            Storage::delete($picture->picture_url);
+        }
         $land->pictures()->delete();
         $land->delete();
 

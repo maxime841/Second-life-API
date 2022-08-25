@@ -88,6 +88,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('isadmin');
     Route::delete('land/delete/{id}', [LandController::class, 'delete'])
         ->middleware('isadmin');
+    Route::post('land/uploads/{id}', [LandController::class, 'uploadFiles'])
+        ->middleware('isadmin');
 });
 
 // route lands
