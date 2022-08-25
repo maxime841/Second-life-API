@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Land;
+use App\Models\Picture;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class LandSeeder extends Seeder
 {
@@ -14,7 +16,7 @@ class LandSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Land::factory()->create([
+       /* \App\Models\Land::factory()->create([
             'name' => 'Le Domaine de Valombreuse',
             'owner' => 'Khalee.voxel',
             'presentation' => 'Si vous aimez les iles veuillez lire cet article',
@@ -25,6 +27,18 @@ class LandSeeder extends Seeder
             'date_buy' => '2022-04-15',  
         ]);
 
-        \App\Models\Land::factory(5)->create();
+        \App\Models\Land::factory(5)->create();*/
+
+        // create land
+        $lands = Land::factory()->count(5)->create();
+        // create pictures for land
+        foreach ($lands as $land) {
+            $pictures = Picture::factory()->count(4)->create();
+            $pictureFavori = Picture::factory()->count(1)->create([
+                'favori' => true
+            ]);
+            $land->pictures()->saveMany($pictures);
+            $land->pictures()->save($pictureFavori[0]);
+        }
     }
 }

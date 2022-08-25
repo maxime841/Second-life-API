@@ -32,18 +32,9 @@ class DatabaseSeeder extends Seeder
             // TenantSeeder::class,
             //HouseSeeder::class,
             //DjSeeder::class,
+            ClubSeeder::class,
         ]);
 
-        // create land
-        $lands = Land::factory()->count(5)->create();
-        // create pictures for land
-        foreach ($lands as $land) {
-            $pictures = Picture::factory()->count(4)->create();
-            $pictureFavori = Picture::factory()->count(1)->create([
-                'favori' => true
-            ]);
-            $land->pictures()->saveMany($pictures);
-            $land->pictures()->save($pictureFavori[0]);
-        }
+        
     }
 }

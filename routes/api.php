@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\TenantController;
@@ -52,5 +53,10 @@ Route::resource('/houses', HouseController::class)->only([
 
 //Route crud tenant
 Route::resource('/tenants', TenantController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
+//Route crud club
+Route::resource('/club', ClubController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);

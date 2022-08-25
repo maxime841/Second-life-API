@@ -15,5 +15,11 @@ class Dj extends Model
         'date_entrance',
         ];
 
-        
+        public function clubs()
+    {
+        return $this->belongsToMany(Club::class);
+    }
 }
+
+        
+

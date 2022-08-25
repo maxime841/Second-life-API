@@ -11,7 +11,15 @@ class Club extends Model
 
     protected $fillable = [
         'name',
-        'owner'
+        'owner',
+        'party_id',
+        'dj_id',
+        'dancer_id',
         ];
+
+        public function djs()
+        {
+            return $this->belongsToMany(Dj::class);
+        }
 
 }
