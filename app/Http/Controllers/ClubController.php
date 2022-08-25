@@ -14,8 +14,15 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $club = Club::all();
-        return response()->json(['club' => $club]);
+        $clubs = Club::all();
+        foreach ($clubs as $club) {
+            foreach ($club->pictures as $picture){
+               if($picture->favori == true && $picture->picturable_id == $club->id) {
+                $club->picture = $picture;
+                }
+            }
+        }     
+        return response()->json(['land' => $clubs]);
     }
 
     /**

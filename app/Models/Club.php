@@ -15,11 +15,17 @@ class Club extends Model
         'party_id',
         'dj_id',
         'dancer_id',
+        'picture',
         ];
 
         public function djs()
         {
             return $this->belongsToMany(Dj::class);
         }
+
+        public function pictures()
+    {
+        return $this->morphMany(Picture::class, 'pictureable');
+    }
 
 }
