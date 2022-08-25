@@ -8,6 +8,7 @@ use App\Http\Controllers\HouseController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\PictureController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +73,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('auth/verified', [AuthController::class, 'verifiedAuth'])
         ->middleware('ispublic');
     Route::delete('auth/logout', [AuthController::class, 'logout'])
-        ->middleware('public');
+        ->middleware('ispublic');
+
+    // route user
+    Route::get('user/profil', [UserController::class, 'getProfil'])
+        ->middleware('ispublic');
+    Route::put('user/profil/update', [UserController::class, 'updateProfil'])
+        ->middleware('ispublic');
+
 
     // route roles
     Route::get('roles', [RoleController::class, 'getAll'])
