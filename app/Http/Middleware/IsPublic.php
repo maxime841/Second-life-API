@@ -16,7 +16,15 @@ class IsPublic
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role->libelle == 'public') {
+        if (
+            auth()->user()->role->libelle == 'root' ||
+            auth()->user()->role->libelle == 'admin' ||
+            auth()->user()->role->libelle == 'managerclub' ||
+            auth()->user()->role->libelle == 'managerdancer' ||
+            auth()->user()->role->libelle == 'managerdj' ||
+            auth()->user()->role->libelle == 'auth' ||
+            auth()->user()->role->libelle == 'public'
+        ) {
             return $next($request);
         } else {
             abort(403);

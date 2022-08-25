@@ -2,10 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\PictureController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,4 +71,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // routes auth
     Route::get('auth/verified', [AuthController::class, 'verifiedAuth']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
+
+    // route roles
+    Route::get('roles', [RoleController::class, 'getAll'])
+        ->middleware(['isadmin']);
+    Route::get('role/{id}', [RoleController::class, 'getOne'])
+        ->middleware(['isroot']);
+    Route::post('role/create', [RoleController::class, 'create'])
+        ->middleware(['isroot']);
+    Route::put('role/update/{id}', [RoleController::class, 'update'])
+        ->middleware(['isroot']);
+    Route::delete('role/delete/{id}', [RoleController::class, 'delete'])
+        ->middleware(['isroot']);
 });

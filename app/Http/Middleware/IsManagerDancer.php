@@ -16,7 +16,12 @@ class IsManagerDancer
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role->libelle == 'managerdancer') {
+        if (
+            auth()->user()->role->libelle == 'root' ||
+            auth()->user()->role->libelle == 'admin' ||
+            auth()->user()->role->libelle == 'managerclub' ||
+            auth()->user()->role->libelle == 'managerdancer'
+        ) {
             return $next($request);
         } else {
             abort(403);
