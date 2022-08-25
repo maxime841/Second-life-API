@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LandCreateRequest extends FormRequest
+class LandUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class LandCreateRequest extends FormRequest
             'group' => ['required', 'string'],
             'prims' => ['required'],
             'remaining_prims' => ['required'],
-            'date_buy' => ['required', 'date']
+            'date_buy' => ['required'],
         ];
     }
 }
