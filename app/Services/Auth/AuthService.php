@@ -20,7 +20,7 @@ class AuthService implements AuthContract
      */
     public function accessToken(User $user, $password): JsonResponse
     {
-        if ($user || Hash::check($password, $user->password)) {
+        if ($user && Hash::check($password, $user->password)) {
             return response()->json([
                 'access_token' => $user->createToken('test_token')->plainTextToken,
                 'authenticated' => true,
@@ -44,7 +44,7 @@ class AuthService implements AuthContract
      */
     public function accessTokenVerified(User $user, $password): JsonResponse
     {
-        if ($user || Hash::check($password, $user->password)) {
+        if ($user && Hash::check($password, $user->password)) {
             $user->sendEmailVerificationNotification();
             return response()->json([
                 'message' => "Un email vous a ete envoyé. Veuillez valider votre compte afin de terminer l'inscription",

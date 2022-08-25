@@ -26,7 +26,7 @@ class AuthLoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email', Rule::exists('users')],
-            'password' => ['required', 'string']
+            'password' => ['required', 'string', 'min:8']
         ];
     }
 }
