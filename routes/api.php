@@ -80,7 +80,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('ispublic');
     Route::put('user/profil/update', [UserController::class, 'updateProfil'])
         ->middleware('ispublic');
-
+    Route::post('user/profil/update/password', [UserController::class, 'updatePassword'])
+        ->middleware('ispublic');
 
     // route roles
     Route::get('roles', [RoleController::class, 'getAll'])
