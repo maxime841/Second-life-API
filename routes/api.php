@@ -90,8 +90,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('isadmin');
     Route::post('land/uploads/{id}', [LandController::class, 'uploadFiles'])
         ->middleware('isadmin');
+
+    // route tenants
+    Route::post('tenant/create', [TenantController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('tenant/update/{id}', [TenantController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('tenant/delete/{id}', [TenantController::class, 'delete'])
+        ->middleware('isadmin');
 });
 
 // route lands
 Route::get('lands', [LandController::class, 'getAll']);
 Route::get('land/{id}', [LandController::class, 'getOne']);
+
+// route tenants
+Route::get('tenants', [TenantController::class, 'getAll']);
+Route::get('tenant/{id}', [TenantController::class, 'getOne']);

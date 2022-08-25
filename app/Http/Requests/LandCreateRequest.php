@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Land;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LandCreateRequest extends FormRequest
 {
@@ -24,11 +26,11 @@ class LandCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', Rule::unique(Land::class)],
             'owner' => '',
             'presentation' => ['required', 'string'],
             'description' => ['required', 'string'],
-            'group' => ['required', 'string'],
+            'group' => ['required', 'string', Rule::unique(Land::class)],
             'prims' => ['required'],
             'remaining_prims' => ['required'],
             'date_buy' => ['required', 'date']

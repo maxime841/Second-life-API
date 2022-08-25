@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Land;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LandUpdateRequest extends FormRequest
+class TenantUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,13 +25,7 @@ class LandUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'owner' => '',
-            'presentation' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'group' => ['required', 'string'],
-            'prims' => ['required'],
-            'remaining_prims' => ['required'],
-            'date_buy' => ['required'],
+            'rent' => ['required', 'integer'],
         ];
     }
 }
