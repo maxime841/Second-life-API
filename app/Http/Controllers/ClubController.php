@@ -22,7 +22,7 @@ class ClubController extends Controller
                 }
             }
         }     
-        return response()->json(['land' => $clubs]);
+        return response()->json(['clubs' => $clubs]);
     }
 
     /**
@@ -43,7 +43,8 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $club = Club::create($request->all());
+        return redirect()->route('club.index', [$club]);
     }
 
     /**
@@ -54,7 +55,13 @@ class ClubController extends Controller
      */
     public function show($id)
     {
-        //
+        $club =  Club::find($id);
+        foreach ($club->pictures as $picture){
+            if($picture->picturable_type == 'club') {
+             $club->picture = $picture;
+            }
+        }
+        return response()->json(['club' => $club]);
     }
 
     /**
