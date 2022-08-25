@@ -84,7 +84,13 @@ class ClubController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $clubId = Club::find($id);
+        $clubId->update([
+            'name' => $request->name,
+            'owner' => $request->owner,
+        ]);
+
+        return response()->json(['club' => $clubId]);
     }
 
     /**
