@@ -22,11 +22,6 @@ use App\Http\Controllers\PictureController;
 |
 */
 
-//Route crud land
-Route::resource('/lands', LandController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
 //Route afficher les photos land
 Route::get('/upload_land', [PictureController::class, 'index_land']);
 
@@ -113,4 +108,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware(['isroot']);
     Route::delete('role/delete/{id}', [RoleController::class, 'delete'])
         ->middleware(['isroot']);
+
+    // route lands
+    Route::post('land/create', [LandController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('land/update/{id}', [LandController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('land/delete/{id}', [LandController::class, 'delete'])
+        ->middleware('isadmin');
 });
+
+// route lands
+Route::get('lands', [LandController::class, 'getAll']);
+Route::get('land/{id}', [LandController::class, 'getOne']);
