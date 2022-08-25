@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             //PictureSeeder::class,
             // TenantSeeder::class,
             //HouseSeeder::class,
-            //DjSeeder::class,
+            DjSeeder::class,
             ClubSeeder::class,
         ]);
 

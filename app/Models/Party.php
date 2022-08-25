@@ -14,4 +14,24 @@ class Party extends Model
         'owner',
         'date_party'
         ];
+
+        public function djs()
+    {
+        return $this->belongsToMany(Dj::class);
+    }
+
+    public function dancers()
+    {
+        return $this->belongsToMany(Dancer::class);
+    }
+
+    public function clubs()
+    {
+        return $this->belongsToMany(Club::class);
+    }
+
+    public function pictures()
+        {
+        return $this->morphMany(Picture::class, 'pictureable');
+        }
 }

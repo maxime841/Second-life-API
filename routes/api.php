@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DjController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\HouseController;
@@ -63,3 +64,8 @@ Route::resource('/club', ClubController::class)->only([
 
 //Route pour upload image du club
 Route::post('/club/upload', [clubController::class, 'upload_club']);
+
+//Route crud club
+Route::resource('/dj', DjController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);

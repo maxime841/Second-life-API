@@ -16,9 +16,9 @@ class ClubSeeder extends Seeder
      */
     public function run()
     {
-       // create land
+       // create club
        $clubs = Club::factory()->count(5)->create();
-       // create pictures for land
+       // create pictures for club
        foreach ($clubs as $club) {
            $pictures = Picture::factory()->count(4)->create();
            $pictureFavori = Picture::factory()->count(1)->create([
