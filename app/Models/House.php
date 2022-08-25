@@ -9,18 +9,18 @@ class House extends Model
 {
     use HasFactory;
 
-   protected $fillable = [
-    'name',
-    'owner',
-    'presentation',
-    'prims',
-    'remaining_house_prims',
-    'date_start_rent',
-    'date_end_rent',
-   ];
+    protected $fillable = [
+        'name',
+        'owner',
+        'presentation',
+        'prims',
+        'remaining_house_prims',
+        'date_start_rent',
+        'date_end_rent',
+    ];
 
-    public function tenants()
+    public function tenant()
     {
-        return $this->hasMany(Tenant::class);
+        return $this->belongsTo(Tenant::class);
     }
 }
