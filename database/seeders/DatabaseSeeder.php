@@ -8,6 +8,7 @@ use App\Models\Land;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Picture;
+use App\Models\Tenant;
 use Illuminate\Database\Seeder;
 use Database\Seeders\LandSeeder;
 use Illuminate\Support\Facades\Hash;
@@ -126,5 +127,10 @@ class DatabaseSeeder extends Seeder
             $land->pictures()->saveMany($pictures);
             $land->pictures()->save($pictureFavori[0]);
         }
+
+        // create tenants
+        $tenants = Tenant::factory()->count(10)->create();
+
+        // create houses
     }
 }

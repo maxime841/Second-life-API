@@ -18,7 +18,7 @@ class TenantFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'rent' =>fake()->numberBetween(0,1000000),
+            'rent' => fake()->numberBetween(0, 1000000),
         ];
     }
 }
