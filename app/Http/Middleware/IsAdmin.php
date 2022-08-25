@@ -16,7 +16,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role->libelle == 'admin') {
+        if (
+            auth()->user()->role->libelle == 'root' ||
+            auth()->user()->role->libelle == 'admin'
+        ) {
             return $next($request);
         } else {
             abort(403);
