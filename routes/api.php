@@ -60,3 +60,6 @@ Route::resource('/tenants', TenantController::class)->only([
 Route::resource('/club', ClubController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
+
+//Route pour upload image du club
+Route::post('/club/upload', [clubController::class, 'upload_club']);
