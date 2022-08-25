@@ -67,6 +67,8 @@ class Kernel extends HttpKernel
         'isadmin' => \App\Http\Middleware\IsAdmin::class,
         'isauth' => \App\Http\Middleware\IsAuth::class,
         'ispublic' => \App\Http\Middleware\IsPublic::class,
-
+        'managerclub' => \App\Http\Middleware\IsManagerClub::class,
+        'managerdancer' => \App\Http\Middleware\IsManagerDancer::class,
+        'managerdj' => \App\Http\Middleware\IsManagerDj::class,
     ];
 }
