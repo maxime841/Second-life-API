@@ -69,8 +69,10 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifiedAuthEma
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // routes auth
-    Route::get('auth/verified', [AuthController::class, 'verifiedAuth']);
-    Route::delete('auth/logout', [AuthController::class, 'logout']);
+    Route::get('auth/verified', [AuthController::class, 'verifiedAuth'])
+        ->middleware('ispublic');
+    Route::delete('auth/logout', [AuthController::class, 'logout'])
+        ->middleware('public');
 
     // route roles
     Route::get('roles', [RoleController::class, 'getAll'])
