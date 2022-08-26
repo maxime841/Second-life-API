@@ -66,6 +66,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('ispublic');
     Route::post('user/profil/update/password', [UserController::class, 'updatePassword'])
         ->middleware('ispublic');
+    Route::get('users', [UserController::class, 'getAll'])->middleware('isadmin');
+    Route::get('user/{id}', [UserController::class, 'getOne'])->middleware('isadmin');
+    Route::get('user/{iduser}/update-role/{idrole}', [UserController::class, 'updateRoleOfUser'])
+        ->middleware('isadmin');
+    Route::delete('user/delete', [UserController::class, 'deleteCurrent'])
+        ->middleware('ispublic');
+    Route::delete('user/delete/{id}', [UserController::class, 'delete'])
+        ->middleware('isroot');
+    Route::post('user/upload/avatar', [UserController::class, 'uploadAvatar'])
+        ->middleware('ispublic');
 
     // route roles
     Route::get('roles', [RoleController::class, 'getAll'])
