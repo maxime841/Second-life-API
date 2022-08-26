@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandController;
@@ -112,7 +110,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('isadmin');
     Route::get('house/{idhouse}/tenant/{idtenant}/affect', [HouseController::class, 'affectTenantOfHouse'])
         ->middleware('isadmin');
+
+    // route picture
+    Route::post('picture/update/{id}', [PictureController::class, 'updateImage'])
+        ->middleware('isadmin');
+    Route::delete('picture/delete/{id}', [PictureController::class, 'delete'])
+        ->middleware('isadmin');
+    Route::get('picture/{id}/update/{favori}', [PictureController::class, 'updateFavori'])
+        ->middleware('isadmin');
 });
+
+/********************
+ *** NOT CONNECTED ***
+/***************** */
 
 // route lands
 Route::get('lands', [LandController::class, 'getAll']);
