@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\House;
 use App\Models\Land;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Picture;
+use App\Models\Tenant;
 use Illuminate\Database\Seeder;
 use Database\Seeders\LandSeeder;
 use Illuminate\Support\Facades\Hash;
@@ -125,6 +127,23 @@ class DatabaseSeeder extends Seeder
             ]);
             $land->pictures()->saveMany($pictures);
             $land->pictures()->save($pictureFavori[0]);
+        }
+
+        // create tenants
+        $tenants = Tenant::factory()->count(10)->create();
+
+        // create houses
+        foreach ($lands as $land) {
+            $houses = House::factory()->count(10)->create();
+            foreach ($houses as $house) {
+                $pictures = Picture::factory()->count(4)->create();
+                $pictureFavori = Picture::factory()->count(1)->create([
+                    'favori' => true
+                ]);
+                $house->pictures()->saveMany($pictures);
+                $house->pictures()->save($pictureFavori[0]);
+            }
+            $land->houses()->saveMany($houses);
         }
     }
 }

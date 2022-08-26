@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('owner')->nullable();
             $table->string('presentation');
             $table->string('description');
-            $table->string('group');
+            $table->string('group')->unique();
             $table->integer('prims');
             $table->integer('remaining_prims');
             $table->string('date_buy')->nullable();
-            
+
             $table->timestamps();
         });
     }

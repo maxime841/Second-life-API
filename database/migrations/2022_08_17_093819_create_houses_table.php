@@ -22,9 +22,10 @@ return new class extends Migration
             $table->integer('remaining_house_prims');
             $table->string('date_start_rent')->nullable();
             $table->string('date_end_rent')->nullable();
-
-            $table->integer('tenant_id')->nullable();
             $table->timestamps();
+
+            $table->foreignId('tenant_id')->nullable();
+            $table->foreignId('land_id')->nullable()->constrained();
         });
     }
 

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Picture;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +40,58 @@ class UserController extends Controller
     }
 
     /**
+     * get all user
+     * * 200 [users]
+     * * 401 [message]
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAll(Request $request): JsonResponse
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->role;
+            $user->picture;
+        }
+        return response()->json(['users' => $users]);
+    }
+
+    /**
+     * get one user
+     * * 200 [users]
+     * * 401 [message]
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOne(Request $request): JsonResponse
+    {
+        $user = User::find($request->id);
+        $user->role;
+        $user->picture;
+        return response()->json(['users' => $user]);
+    }
+
+    /**
+     * update role of user
+     * * 200 [user]
+     * * 401 [message]
+     *
+     * @return JsonResponse
+     */
+    public function updateRoleOfUser(Request $request): JsonResponse
+    {
+        $user = User::find($request->iduser);
+        $role = Role::find($request->idrole);
+
+        $role->users()->save($user);
+        $user->picture;
+
+        return response()->json(['user' => $user]);
+    }
+
+    /**
      * get profil of user current
      * * 200 [user_profil]
      * * 401 [message]
@@ -46,6 +101,8 @@ class UserController extends Controller
      */
     public function getProfil(Request $request): JsonResponse
     {
+        $request->user()->picture;
+        $request->user()->role;
         return response()->json(['user_profil' => $request->user()]);
     }
 
@@ -214,5 +271,85 @@ class UserController extends Controller
                 'authenticated' => false
             ], 403);
         }
+    }
+
+    /**
+     * upload image for user
+     * * 200 [user]
+     * * 401 [message]
+     * * 422 [message, errors=>nameinput]
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function uploadAvatar(Request $request): JsonResponse
+    {
+        $request->validate(['avatar' => 'required']);
+        $user = $request->user();
+
+        // for upload image
+        if ($request->avatar) {
+            $file = $request->file('avatar');
+            $extension = $file->extension();
+            $nameImage = $user->id . 'user' . uniqid() . '.' . $extension;
+
+            $path = $request->file('avatar')->storeAs(
+                'public/images/avatar',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => true,
+            ]);
+
+            $user->picture()->save($picture);
+        }
+        $user->picture;
+        return response()->json(['user' => $user]);
+    }
+
+    /**
+     * delete user cibling id
+     * * 200 [delete, message]
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delete(Request $request): JsonResponse
+    {
+        $user = User::find($request->id);
+        if ($user->picture) {
+            Storage::delete($user->picture->picture_url);
+            $user->picture()->delete();
+        }
+        $user->tokens()->delete();
+        $user->delete();
+        return response()->json([
+            'delete' => true,
+            'message' => 'Utilisateur supprimé'
+        ], 200);
+    }
+
+    /**
+     * delete user current
+     * * 200 [disconnect, delete]
+     *
+     * @return JsonResponse
+     */
+    public function deleteCurrent(Request $request): JsonResponse
+    {
+        // delete all image file in project
+        if ($request->user()->picture) {
+            Storage::delete($request->user()->picture->picture_url);
+            $request->user()->picture->delete();
+        }
+        $request->user()->tokens()->delete();
+        $request->user()->forceDelete();
+        return response()->json([
+            'disconnect' => true,
+            'delete' => true
+        ], 200);
     }
 }
