@@ -70,7 +70,7 @@ class TenantController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * * 200 [message]
+     * * 200 [message, delete]
      * * 401 [message]
      *
      * @param  int  $id
@@ -78,8 +78,18 @@ class TenantController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $tenantId = Tenant::find($request->id);
-        $tenantId->delete();
-        return response()->json(['message' => 'Le locatataire a été supprimé'], 200);
+        $tenant = Tenant::find($request->id);
+        // detach relation with house
+        if ($tenant->houses()) {
+            foreach ($tenant->houses as $house) {
+                $house->tenant()->dissociate();
+                $house->save();
+            }
+        }
+        $tenant->delete();
+        return response()->json([
+            'message' => 'Le locatataire a été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }

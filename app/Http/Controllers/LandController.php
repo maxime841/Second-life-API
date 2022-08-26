@@ -149,7 +149,7 @@ class LandController extends Controller
 
     /**
      * delete land.
-     * * 200 [message]
+     * * 200 [message, delete]
      * * 401 [message]
      *
      * @param  int  $id
@@ -158,12 +158,24 @@ class LandController extends Controller
     public function delete(Request $request): JsonResponse
     {
         $land = Land::find($request->id);
+        if ($land->houses()) {
+            return response()->json([
+                'message' => 'Ce terrain contient des maisons, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+        // delete all image file in project
         foreach ($land->pictures as $picture) {
             Storage::delete($picture->picture_url);
         }
+        // delete all image in database
         $land->pictures()->delete();
+        // delete land
         $land->delete();
 
-        return response()->json(['message' => 'Le terrain a bien été supprimé', 200]);
+        return response()->json([
+            'message' => 'Le terrain a bien été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }

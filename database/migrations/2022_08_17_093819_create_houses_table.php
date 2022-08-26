@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('date_end_rent')->nullable();
             $table->timestamps();
 
-            $table->foreignId('tenant_id')->nullable()->constrained();
+            $table->foreignId('tenant_id')->nullable();
             $table->foreignId('land_id')->nullable()->constrained();
         });
     }
