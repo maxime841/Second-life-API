@@ -135,6 +135,14 @@ class DatabaseSeeder extends Seeder
         // create houses
         foreach ($lands as $land) {
             $houses = House::factory()->count(10)->create();
+            foreach ($houses as $house) {
+                $pictures = Picture::factory()->count(4)->create();
+                $pictureFavori = Picture::factory()->count(1)->create([
+                    'favori' => true
+                ]);
+                $house->pictures()->saveMany($pictures);
+                $house->pictures()->save($pictureFavori[0]);
+            }
             $land->houses()->saveMany($houses);
         }
     }

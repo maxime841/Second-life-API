@@ -98,6 +98,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('isadmin');
     Route::delete('tenant/delete/{id}', [TenantController::class, 'delete'])
         ->middleware('isadmin');
+
+    // route houses
+    Route::post('house/create', [HouseController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('house/update/{id}', [HouseController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('house/delete/{id}', [HouseController::class, 'delete'])
+        ->middleware('isadmin');
+    Route::post('house/uploads/{id}', [HouseController::class, 'uploadFiles'])
+        ->middleware('isadmin');
+    Route::get('house/{idhouse}/land/{idland}/affect', [HouseController::class, 'affectLandOfHouse'])
+        ->middleware('isadmin');
+    Route::get('house/{idhouse}/tenant/{idtenant}/affect', [HouseController::class, 'affectTenantOfHouse'])
+        ->middleware('isadmin');
 });
 
 // route lands
@@ -107,3 +121,7 @@ Route::get('land/{id}', [LandController::class, 'getOne']);
 // route tenants
 Route::get('tenants', [TenantController::class, 'getAll']);
 Route::get('tenant/{id}', [TenantController::class, 'getOne']);
+
+// route houses
+Route::get('houses', [HouseController::class, 'getAll']);
+Route::get('house/{id}', [HouseController::class, 'getOne']);

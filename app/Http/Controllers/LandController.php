@@ -42,7 +42,11 @@ class LandController extends Controller
     public function getOne($id): JsonResponse
     {
         $land = Land::find($id);
-        $land->pictures;
+        foreach ($land->pictures as $picture) {
+            if ($picture->favori == true) {
+                $land->picture_favoris = $picture;
+            }
+        }
         return response()->json(['land' => $land], 200);
     }
 
@@ -65,12 +69,11 @@ class LandController extends Controller
         if ($request->image) {
             $file = $request->file('image');
             $extension = $file->extension();
-            $nameImage = $land->id . 'land' . uniqid();
-            $nameImageForPath = $land->id . 'land' . uniqid() . '.' . $extension;
+            $nameImage = $land->id . 'land' . uniqid() . '.' . $extension;
 
             $path = $request->file('image')->storeAs(
                 'public/images/lands',
-                $nameImageForPath
+                $nameImage
             );
 
             $picture = Picture::create([
@@ -134,7 +137,7 @@ class LandController extends Controller
             $picture = Picture::create([
                 'name' => $nameImage,
                 'picture_url' => $path,
-                'favori' => true,
+                'favori' => false,
             ]);
 
             $land->pictures()->save($picture);
