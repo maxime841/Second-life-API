@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandController;
@@ -21,39 +19,6 @@ use App\Http\Controllers\PictureController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-//Route crud land
-Route::resource('/lands', LandController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-//Route afficher les photos land
-Route::get('/upload_land', [PictureController::class, 'index_land']);
-
-//Route afficher les photos house
-Route::get('/upload_house', [PictureController::class, 'index_house']);
-
-//Route afficher les photos club
-Route::get('/upload_club', [PictureController::class, 'index_club']);
-
-//Route afficher les photos dj
-Route::get('/upload_dj', [PictureController::class, 'index_dj']);
-
-//Route afficher les photos dancer
-Route::get('/upload_dancer', [PictureController::class, 'index_dancer']);
-
-//Route upload photo
-Route::post('/upload', [PictureController::class, 'store']);
-
-//Route crud house
-Route::resource('/houses', HouseController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-//Route crud tenant
-Route::resource('/tenants', TenantController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
 
 /**********************
  *** AUTHENTICATION ****
@@ -101,6 +66,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('ispublic');
     Route::post('user/profil/update/password', [UserController::class, 'updatePassword'])
         ->middleware('ispublic');
+    Route::get('users', [UserController::class, 'getAll'])->middleware('isadmin');
+    Route::get('user/{id}', [UserController::class, 'getOne'])->middleware('isadmin');
+    Route::get('user/{iduser}/update-role/{idrole}', [UserController::class, 'updateRoleOfUser'])
+        ->middleware('isadmin');
+    Route::delete('user/delete', [UserController::class, 'deleteCurrent'])
+        ->middleware('ispublic');
+    Route::delete('user/delete/{id}', [UserController::class, 'delete'])
+        ->middleware('isroot');
+    Route::post('user/upload/avatar', [UserController::class, 'uploadAvatar'])
+        ->middleware('ispublic');
 
     // route roles
     Route::get('roles', [RoleController::class, 'getAll'])
@@ -113,4 +88,60 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware(['isroot']);
     Route::delete('role/delete/{id}', [RoleController::class, 'delete'])
         ->middleware(['isroot']);
+
+    // route lands
+    Route::post('land/create', [LandController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('land/update/{id}', [LandController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('land/delete/{id}', [LandController::class, 'delete'])
+        ->middleware('isadmin');
+    Route::post('land/uploads/{id}', [LandController::class, 'uploadFiles'])
+        ->middleware('isadmin');
+
+    // route tenants
+    Route::post('tenant/create', [TenantController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('tenant/update/{id}', [TenantController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('tenant/delete/{id}', [TenantController::class, 'delete'])
+        ->middleware('isadmin');
+
+    // route houses
+    Route::post('house/create', [HouseController::class, 'create'])
+        ->middleware('isadmin');
+    Route::put('house/update/{id}', [HouseController::class, 'update'])
+        ->middleware('isadmin');
+    Route::delete('house/delete/{id}', [HouseController::class, 'delete'])
+        ->middleware('isadmin');
+    Route::post('house/uploads/{id}', [HouseController::class, 'uploadFiles'])
+        ->middleware('isadmin');
+    Route::get('house/{idhouse}/land/{idland}/affect', [HouseController::class, 'affectLandOfHouse'])
+        ->middleware('isadmin');
+    Route::get('house/{idhouse}/tenant/{idtenant}/affect', [HouseController::class, 'affectTenantOfHouse'])
+        ->middleware('isadmin');
+
+    // route picture
+    Route::post('picture/update/{id}', [PictureController::class, 'updateImage'])
+        ->middleware('isadmin');
+    Route::delete('picture/delete/{id}', [PictureController::class, 'delete'])
+        ->middleware('isadmin');
+    Route::get('picture/{id}/update/{favori}', [PictureController::class, 'updateFavori'])
+        ->middleware('isadmin');
 });
+
+/********************
+ *** NOT CONNECTED ***
+/***************** */
+
+// route lands
+Route::get('lands', [LandController::class, 'getAll']);
+Route::get('land/{id}', [LandController::class, 'getOne']);
+
+// route tenants
+Route::get('tenants', [TenantController::class, 'getAll']);
+Route::get('tenant/{id}', [TenantController::class, 'getOne']);
+
+// route houses
+Route::get('houses', [HouseController::class, 'getAll']);
+Route::get('house/{id}', [HouseController::class, 'getOne']);

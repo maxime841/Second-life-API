@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Models\Role;
-use Illuminate\Contracts\Auth\CanResetPassword;
+
+use App\Models\Picture;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -34,6 +35,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return new Attribute(
             get: fn () => $this->role,
         );
+    }
+
+    public function picture()
+    {
+        return $this->morphOne(Picture::class, 'pictureable');
     }
 
     /**

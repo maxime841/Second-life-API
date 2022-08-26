@@ -14,8 +14,8 @@ class Tenant extends Model
         'rent',
     ];
 
-    public function house()
+    public function houses()
     {
-        return $this->belongsTo(House::class);
+        return $this->hasMany(House::class);
     }
 }
