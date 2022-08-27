@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Club;
+use App\Models\Party;
+use App\Models\Picture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Dj;
+use App\Models\Dancer;
+use App\Models\Party;
+use App\Models\Picture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('club_dj', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('club_party', function (Blueprint $table) {
+            $table->id();
             $table->integer('club_id')->unsigned();
-            $table->integer('dj_id')->unsigned();
+            $table->integer('party_id')->unsigned();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('club_dj');
+        Schema::dropIfExists('club_party');
     }
 };

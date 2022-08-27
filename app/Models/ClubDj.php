@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ClubDj extends Model
+class ClubDj extends Pivot
 {
     
-public function dj()
-{
-    return $this->belongsTo(Dj::class);
-}
- 
-public function club()
-{
-    return $this->belongsTo(Club::class);
-}
+    protected $fillable = [
+        'club_id',
+        'dj_id',
+        ];
 
 }
