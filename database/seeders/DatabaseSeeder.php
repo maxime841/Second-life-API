@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             //HouseSeeder::class,
             //DjSeeder::class,
             ClubSeeder::class,
+            PartySeeder::class,
         ]);
 
         
