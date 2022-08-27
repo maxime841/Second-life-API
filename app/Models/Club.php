@@ -12,9 +12,6 @@ class Club extends Model
     protected $fillable = [
         'name',
         'owner',
-        'party_id',
-        'dj_id',
-        'dancer_id',
         'picture',
         ];
 

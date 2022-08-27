@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('owner');
 
-            $table->integer('party_id')->nullable();
-            $table->integer('dj_id')->nullable();
-            $table->integer('dancer_id')->nullable();
             $table->timestamps();
         });
     }

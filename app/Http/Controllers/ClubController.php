@@ -156,22 +156,21 @@ class ClubController extends Controller
     public function delete(Request $request): JsonResponse
     {
         $club = Club::find($request->id);
-        Log::channel('stderr')->info('club selectionner', [$club]);
-        if ($club->djs()) {
+        if ($club->djs) {
             return response()->json([
                 'message' => 'Ce club contient des djs, impossible de le supprimer',
                 'delete' => false,
             ], 200);
         }
 
-        else if ($club->dancers()) {
+        else if ($club->dancers) {
             return response()->json([
                 'message' => 'Ce club contient des danseurs, impossible de le supprimer',
                 'delete' => false,
             ], 200);
         }
 
-        else if ($club->parties()) {
+        else if ($club->parties) {
             return response()->json([
                 'message' => 'Ce club contient des soirées, impossible de le supprimer',
                 'delete' => false,
