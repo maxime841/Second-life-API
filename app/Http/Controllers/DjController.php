@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dj;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DjController extends Controller
 {
@@ -30,7 +31,7 @@ class DjController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -43,8 +44,9 @@ class DjController extends Controller
      */
     public function store(Request $request)
     {
-        $dj = Dj::create($request->all());
-        return redirect()->route('dj.index', [$dj]);
+        
+       // $dj = Dj::create($request->all());
+       // return redirect()->route('dj.index', [$dj]);
     }
 
     /**

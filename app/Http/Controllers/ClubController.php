@@ -3,105 +3,193 @@
 namespace App\Http\Controllers;
 
 use App\Models\Club;
+use App\Models\Picture;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\ClubCreateRequest;
+use App\Http\Requests\ClubUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ClubController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * get all clubs.
+     * * 200 [clubs]
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll(): JsonResponse
     {
         $clubs = Club::all();
         foreach ($clubs as $club) {
-            foreach ($club->pictures as $picture){
-               if($picture->favori == true && $picture->picturable_id == $club->id) {
-                $club->picture = $picture;
+            foreach ($club->pictures as $picture) {
+                if ($picture->favori == true) {
+                    $club->picture = $picture;
                 }
             }
-        }     
-        return response()->json(['clubs' => $clubs]);
+        }
+        return response()->json(['clubs' => $clubs], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function upload_club(Request $request)
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $club = Club::create($request->all());
-        return redirect()->route('club.index', [$club]);
-    }
-
-    /**
-     * Display the specified resource.
+     * get one land.
+     * * 200 [land]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getOne($id): JsonResponse
     {
-        $club =  Club::find($id);
-        foreach ($club->pictures as $picture){
-            if($picture->picturable_type == 'club') {
-             $club->picture = $picture;
+        $club = Club::find($id);
+        foreach ($club->pictures as $picture) {
+            if ($picture->favori == true) {
+                $club->picture = $picture;
             }
         }
-        return response()->json(['club' => $club]);
+        return response()->json(['club' => $club], 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * create land and add image if input image exist.
+     * * 201 [land]
+     * * 422 [message, errors=>nameinput]
+     * * 401 [message]
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function create(ClubCreateRequest $request): JsonResponse
     {
-        //
+
+        $validate = $request->validated();
+        $club = Club::create($validate);
+
+        // for image upload on create club
+        if ($request->image) {
+            $file = $request->file('image');
+            $extension = $file->extension();
+            $nameImage = $club->id . 'club' . uniqid() . '.' . $extension;
+
+            $path = $request->file('image')->storeAs(
+                'public/images/clubs',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => true,
+            ]);
+
+            $club->pictures()->save($picture);
+        }
+
+        $club->pictures;
+
+        return response()->json(['club' => $club], 201);
     }
 
     /**
      * Update the specified resource in storage.
+     * * 200 [land]
+     * * 422 [message, errors=>nameinput]
+     * * 401 [message]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClubUpdateRequest $request): JsonResponse
     {
-        $clubId = Club::find($id);
-        $clubId->update([
-            'name' => $request->name,
-            'owner' => $request->owner,
-        ]);
+        $validate = $request->validated();
 
-        return response()->json(['club' => $clubId]);
+        $club = Club::find($request->id);
+        $club->forceFill($validate)->save();
+        $club->pictures;
+
+        return response()->json(['club' => $club], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * upload all images
+     * * 200 [land]
+     * * 401 [message]
+     * * 422 [message, errors=>nameinput]
+     *
+     * @return JsonResponse
+     */
+    public function uploadFiles(Request $request)
+    {
+        $request->validate(['images' => 'required']);
+        $club = Club::find($request->id);
+
+        foreach ($request->file('images') as $image) {
+            $extension = $image->extension();
+            $nameImage = $club->id . 'club' . uniqid() . '.' . $extension;
+
+            $path = $image->storeAs(
+                'public/images/clubs',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => false,
+            ]);
+
+            $club->pictures()->save($picture);
+        }
+
+        $club->pictures;
+        return response()->json(['club' => $club]);
+    }
+
+    /**
+     * delete land.
+     * * 200 [message, delete]
+     * * 401 [message]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request): JsonResponse
     {
-        $clubId = Club::find($id);
-        $clubId->delete();
+        $club = Club::find($request->id);
+        Log::channel('stderr')->info('club selectionner', [$club]);
+        if ($club->djs()) {
+            return response()->json([
+                'message' => 'Ce club contient des djs, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+
+        else if ($club->dancers()) {
+            return response()->json([
+                'message' => 'Ce club contient des danseurs, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+
+        else if ($club->parties()) {
+            return response()->json([
+                'message' => 'Ce club contient des soirées, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+
+        // delete all image file in project
+        foreach ($club->pictures as $picture) {
+            Storage::delete($picture->picture_url);
+        }
+        // delete all image in database
+        $club->pictures()->delete();
+        // delete club
+        $club->delete();
+
+        return response()->json([
+            'message' => 'Le club a bien été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }

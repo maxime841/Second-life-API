@@ -4,9 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DjController;
 use App\Http\Controllers\ClubController;
-use App\Http\Controllers\LandController;
-use App\Http\Controllers\HouseController;
-use App\Http\Controllers\TenantController;
 use App\Http\Controllers\PictureController;
 
 /*
@@ -20,52 +17,37 @@ use App\Http\Controllers\PictureController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/**********************
+ *** CONNECTED USER ***
+/******************* */
 
-//Route crud land
-Route::resource('/lands', LandController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
+// route clubs
+Route::post('club/create', [ClubController::class, 'create'])
+/*->middleware('ismanagerclub')*/;
+Route::put('club/update/{id}', [ClubController::class, 'update'])
+/*->middleware('ismanagerclub')*/;
+Route::delete('club/delete/{id}', [ClubController::class, 'delete'])
+/*->middleware('ismanagerclub')*/;
+Route::post('club/uploads/{id}', [ClubController::class, 'uploadFiles'])
+/*->middleware('ismanagerclub')*/;
 
-//Route afficher les photos land
-Route::get('/upload_land', [PictureController::class, 'index_land']);
 
-//Route afficher les photos house
-Route::get('/upload_house', [PictureController::class, 'index_house']);
+/********************
+ *** NOT CONNECTED ***
+/***************** */
 
-//Route afficher les photos club
-Route::get('/upload_club', [PictureController::class, 'index_club']);
+//Route club
+Route::get('club', [ClubController::class, 'getAll']);
+Route::get('club/{id}', [ClubController::class, 'getOne']);
 
-//Route afficher les photos dj
-Route::get('/upload_dj', [PictureController::class, 'index_dj']);
+//Route dj
+//Route::get('/dj', [DjController::class, 'getAll']);
+//Route::get('/dj/:id', [DjController::class, 'getOne']);
 
-//Route afficher les photos dancer
-Route::get('/upload_dancer', [PictureController::class, 'index_dancer']);
+//Route dancer
+//Route::get('/dancer', [DancerController::class, 'getAll']);
+//Route::get('/dancer/:id', [DancerController::class, 'getOne']);
 
-//Route upload photo
-Route::post('/upload', [PictureController::class, 'store']);
-
-//Route crud house
-Route::resource('/houses', HouseController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-//Route crud tenant
-Route::resource('/tenants', TenantController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-//Route crud club
-Route::resource('/club', ClubController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-//Route pour upload image du club
-Route::post('/club/upload', [clubController::class, 'upload_club']);
-
-//Route crud club
-Route::resource('/dj', DjController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
+//Route party
+//Route::get('/party', [PartyController::class, 'getAll']);
+//Route::get('/party/:id', [PartyController::class, 'getOne']);
