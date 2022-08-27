@@ -28,6 +28,7 @@ class PartyCreateRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique(Party::class)],
             'owner' => ['required', 'string'],
+            'date_party' => ['required', 'date'],
         ];
     }
 }

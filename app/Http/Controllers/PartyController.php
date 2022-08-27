@@ -6,6 +6,7 @@ use App\Models\Party;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\PartyCreateRequest;
 
 class PartyController extends Controller
@@ -59,6 +60,7 @@ class PartyController extends Controller
     {
 
         $validate = $request->validated();
+        Log::channel('stderr')->info('validation', $validate);
         $party = Party::create($validate);
 
         // for image upload on create club
