@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dj;
+use App\Models\Dancer;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use App\Http\Requests\DjCreateRequest;
-use App\Http\Requests\DjUpdateRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\DancerCreateRequest;
+use App\Http\Requests\DancerUpdateRequest;
 
-class DjController extends Controller
+class DancerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,15 +19,15 @@ class DjController extends Controller
      */
     public function getAll(): JsonResponse
     {
-        $djs = Dj::all();
-        foreach ($djs as $dj) {
-            foreach ($dj->pictures as $picture){
-               if($picture->favori == true && $picture->picturable_id == $dj->id) {
-                $dj->picture = $picture;
+         $dancers = Dancer::all();
+        foreach ($dancers as $dancer) {
+            foreach ($dancer->pictures as $picture){
+               if($picture->favori == true && $picture->picturable_id == $dancer->id) {
+                $dancer->picture = $picture;
                 }
             }
         }     
-        return response()->json(['djs' => $djs]);
+        return response()->json(['dancers' => $dancers]);
     }
 
      /**
@@ -39,13 +38,13 @@ class DjController extends Controller
      */
     public function getOne($id): JsonResponse
     {
-        $dj =  Dj::find($id);
-        foreach ($dj->pictures as $picture){
-            if($picture->picturable_type == 'dj') {
-             $dj->picture = $picture;
+        $dancer =  Dancer::find($id);
+        foreach ($dancer->pictures as $picture){
+            if($picture->picturable_type == 'dancer') {
+             $dancer->picture = $picture;
             }
         }
-        return response()->json(['club' => $dj]);
+        return response()->json(['dancer' => $dancer]);
     }
 
     /**
@@ -53,19 +52,19 @@ class DjController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(DjCreateRequest $request): JsonResponse
+    public function create(DancerCreateRequest $request): JsonResponse
     {
         $validate = $request->validated();
-        $dj = Dj::create($validate);
+        $dancer = Dancer::create($validate);
     
-        // for image upload on create dj
+        // for image upload on create dancer
         if ($request->image) {
             $file = $request->file('image');
             $extension = $file->extension();
-            $nameImage = $dj->id . 'dj' . uniqid() . '.' . $extension;
+            $nameImage = $dancer->id . 'dancer' . uniqid() . '.' . $extension;
 
             $path = $request->file('image')->storeAs(
-                'public/images/djs',
+                'public/images/dancers',
                 $nameImage
             );
 
@@ -75,12 +74,12 @@ class DjController extends Controller
                 'favori' => true,
             ]);
 
-            $dj->pictures()->save($picture);
+            $dancer->pictures()->save($picture);
         }
 
-        $dj->pictures;
+        $dancer->pictures;
 
-        return response()->json(['dj' => $dj], 201);
+        return response()->json(['dancer' => $dancer], 201);
     }
 
     /**
@@ -90,15 +89,15 @@ class DjController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DjUpdateRequest $request): JsonResponse
+    public function update(DancerUpdateRequest $request): JsonResponse
     {
         $validate = $request->validated();
 
-        $dj = Dj::find($request->id);
-        $dj->forceFill($validate)->save();
-        $dj->pictures;
+        $dancer = Dancer::find($request->id);
+        $dancer->forceFill($validate)->save();
+        $dancer->pictures;
 
-        return response()->json(['dj' => $dj], 200);
+        return response()->json(['dancer' => $dancer], 200);
     }
 
     /**
@@ -109,14 +108,14 @@ class DjController extends Controller
      */public function uploadFiles(Request $request)
      {
         $request->validate(['images' => 'required']);
-        $dj = Dj::find($request->id);
+        $dancer = Dancer::find($request->id);
 
         foreach ($request->file('images') as $image) {
             $extension = $image->extension();
-            $nameImage = $dj->id . 'dj' . uniqid() . '.' . $extension;
+            $nameImage = $dancer->id . 'dancer' . uniqid() . '.' . $extension;
 
             $path = $image->storeAs(
-                'public/images/djs',
+                'public/images/dancers',
                 $nameImage
             );
 
@@ -126,11 +125,11 @@ class DjController extends Controller
                 'favori' => false,
             ]);
 
-            $dj->pictures()->save($picture);
+            $dancer->pictures()->save($picture);
         }
 
-        $dj->pictures;
-        return response()->json(['dj' => $dj]);
+        $dancer->pictures;
+        return response()->json(['dancer' => $dancer]);
     }
 
     /**
@@ -141,25 +140,25 @@ class DjController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $dj = Dj::find($request->id);
-        if ($dj->parties()->exists()) {
+        $dancer = Dancer::find($request->id);
+        if ($dancer->parties()->exists()) {
             return response()->json([
-                'message' => 'Ce dj appartient à une soirée, impossible de le supprimer',
+                'message' => 'Ce danseur appartient à une soirée, impossible de le supprimer',
                 'delete' => false,
             ], 200);
         }
 
         // delete all image file in project
-        foreach ($dj->pictures as $picture) {
+        foreach ($dancer->pictures as $picture) {
             Storage::delete($picture->picture_url);
         }
         // delete all image in database
-        $dj->pictures()->delete();
+        $dancer->pictures()->delete();
         // delete club
-        $dj->delete();
+        $dancer->delete();
 
         return response()->json([
-            'message' => 'Le dj a bien été supprimé',
+            'message' => 'Le danseur a bien été supprimé',
             'delete' => true,
         ], 200);
     }

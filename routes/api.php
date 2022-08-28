@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DjController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PartyController;
+use App\Http\Controllers\DancerController;
 use App\Http\Controllers\PictureController;
 
 /*
@@ -52,6 +53,16 @@ Route::delete('dj/delete/{id}', [DjController::class, 'delete'])
 Route::post('dj/uploads/{id}', [DjController::class, 'uploadFiles'])
 /*->middleware('ismanagerclub')*/;
 
+// route dancer
+Route::post('dancer/create', [DancerController::class, 'create'])
+/*->middleware('ismanagerclub')*/;
+Route::put('dancer/update/{id}', [DancerController::class, 'update'])
+/*->middleware('ismanagerclub')*/;
+Route::delete('dancer/delete/{id}', [DancerController::class, 'delete'])
+/*->middleware('ismanagerclub')*/;
+Route::post('dancer/uploads/{id}', [DancerController::class, 'uploadFiles'])
+/*->middleware('ismanagerclub')*/;
+
 /********************
  *** NOT CONNECTED ***
 /***************** */
@@ -65,8 +76,8 @@ Route::get('/dj', [DjController::class, 'getAll']);
 Route::get('/dj/{id}', [DjController::class, 'getOne']);
 
 //Route dancer
-//Route::get('/dancer', [DancerController::class, 'getAll']);
-//Route::get('/dancer/:id', [DancerController::class, 'getOne']);
+Route::get('/dancer', [DancerController::class, 'getAll']);
+Route::get('/dancer/{id}', [DancerController::class, 'getOne']);
 
 //Route party
 Route::get('/party', [PartyController::class, 'getAll']);
