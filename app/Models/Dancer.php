@@ -24,6 +24,11 @@ class Dancer extends Model
             return $this->belongsToMany(Party::class);
         }
 
+        public function pictures()
+        {
+        return $this->morphMany(Picture::class, 'pictureable');
+        }
+
             /**
      * The attributes that should be cast.
      *

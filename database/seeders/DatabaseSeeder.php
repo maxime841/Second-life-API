@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ClubSeeder::class,
             PartySeeder::class,
             DjSeeder::class,
+            DancerSeeder::class,
            
         ]);
 
