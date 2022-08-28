@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             PartySeeder::class,
             DjSeeder::class,
             DancerSeeder::class,
-        )];
+        ]);
         
         // create role
         Role::factory()->create([
