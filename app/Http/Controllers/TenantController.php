@@ -4,92 +4,92 @@ namespace App\Http\Controllers;
 
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\TenantCreateRequest;
+use App\Http\Requests\TenantUpdateRequest;
 
 class TenantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * get all.
+     * * 200 [tenants]
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll(): JsonResponse
     {
         $tenant = Tenant::all();
-        return response()->json(['tenants' => $tenant]);
+        return response()->json(['tenants' => $tenant], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $tenant = Tenant::create($request->all());
-        return redirect()->route('tenants.index', [$tenant]);
-    }
-
-    /**
-     * Display the specified resource.
+     * get one.
+     * * 200 [tenant]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getOne(Request $request): JsonResponse
     {
-        $tenant =  Tenant::find($id);
-        return response()->json(['tenant' => $tenant]);
+        $tenant = Tenant::find($request->id);
+        return response()->json(['tenant' => $tenant], 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * create tenant.
+     * * 200 [tenant]
+     * * 401 [message]
+     * * 422 [message, errors=>inputname]
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function create(TenantCreateRequest $request): JsonResponse
     {
-        //
+        $validate = $request->validated();
+        $tenant = Tenant::create($validate);
+        return response()->json(['tenant' => $tenant], 201);
     }
 
     /**
      * Update the specified resource in storage.
+     * * 200 [tenant]
+     * * 401 [message]
+     * * 422 [message, errors=>inputname]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TenantUpdateRequest $request): JsonResponse
     {
-        $tenantId = Tenant::find($id);
-        $tenantId->update([
-            'name' => $request->name,
-            'rent' => $request->rent,
-        ]);
-
-        return response()->json(['tenant' => $tenantId]);
+        $validate = $request->validated();
+        $tenant = Tenant::find($request->id);
+        $tenant->forceFill($validate)->save();
+        return response()->json(['tenant' => $tenant], 200);
     }
 
     /**
      * Remove the specified resource from storage.
+     * * 200 [message, delete]
+     * * 401 [message]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request): JsonResponse
     {
-        $tenantId = Tenant::find($id);
-        $tenantId->delete();
+        $tenant = Tenant::find($request->id);
+        // detach relation with house
+        if ($tenant->houses()) {
+            foreach ($tenant->houses as $house) {
+                $house->tenant()->dissociate();
+                $house->save();
+            }
+        }
+        $tenant->delete();
+        return response()->json([
+            'message' => 'Le locatataire a été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }

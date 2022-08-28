@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsAuth
+class IsManagerDancer
 {
     /**
      * Handle an incoming request.
@@ -20,9 +20,7 @@ class IsAuth
             auth()->user()->role->libelle == 'root' ||
             auth()->user()->role->libelle == 'admin' ||
             auth()->user()->role->libelle == 'managerclub' ||
-            auth()->user()->role->libelle == 'managerdancer' ||
-            auth()->user()->role->libelle == 'managerdj' ||
-            auth()->user()->role->libelle == 'auth'
+            auth()->user()->role->libelle == 'managerdancer'
         ) {
             return $next($request);
         } else {

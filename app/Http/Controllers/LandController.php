@@ -3,114 +3,179 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
+use App\Models\Picture;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\LandCreateRequest;
+use App\Http\Requests\LandUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 class LandController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * get all lands.
+     * * 200 [lands]
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll(): JsonResponse
     {
-       $lands = Land::all();
-       foreach ($lands as $land) {
-        foreach ($land->pictures as $picture){
-           if($picture->favori == true && $picture->picturable_id == $land->id) {
-            $land->picture = $picture;
-           }
-       }
-    }     
-    return response()->json(['land' => $lands]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $land = Land::create($request->all());
-        return redirect()->route('lands.index', [$land]); 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $land =  Land::find($id);
-        foreach ($land->pictures as $picture){
-            if($picture->picturable_type == 'land') {
-             $land->picture = $picture;
+        $lands = Land::all();
+        foreach ($lands as $land) {
+            foreach ($land->pictures as $picture) {
+                if ($picture->favori == true) {
+                    $land->picture_favoris = $picture;
+                }
             }
         }
-        return response()->json(['land' => $land]);
+        return response()->json(['lands' => $lands], 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * get one land.
+     * * 200 [land]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getOne($id): JsonResponse
     {
-        $land = Land::findOrFail($id);
-         return response()->json(['land' => $land]);
+        $land = Land::find($id);
+        foreach ($land->pictures as $picture) {
+            if ($picture->favori == true) {
+                $land->picture_favoris = $picture;
+            }
+        }
+        return response()->json(['land' => $land], 200);
+    }
+
+    /**
+     * create land and add image if input image exist.
+     * * 201 [land]
+     * * 422 [message, errors=>nameinput]
+     * * 401 [message]
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(LandCreateRequest $request): JsonResponse
+    {
+
+        $validate = $request->validated();
+        $validate['owner'] = $request->owner ?? null;
+        $land = Land::create($validate);
+
+        // for image upload on create land
+        if ($request->image) {
+            $file = $request->file('image');
+            $extension = $file->extension();
+            $nameImage = $land->id . 'land' . uniqid() . '.' . $extension;
+
+            $path = $request->file('image')->storeAs(
+                'public/images/lands',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => true,
+            ]);
+
+            $land->pictures()->save($picture);
+        }
+
+        $land->pictures;
+
+        return response()->json(['land' => $land], 201);
     }
 
     /**
      * Update the specified resource in storage.
+     * * 200 [land]
+     * * 422 [message, errors=>nameinput]
+     * * 401 [message]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(LandUpdateRequest $request): JsonResponse
     {
-        $landId = Land::find($id);
-        $landId->update([
-            'name' => $request->name,
-            'owner' => $request->owner,
-            'presentation' => $request->presentation,
-            'description' => $request->description,
-            'group' => $request->group,
-            'prims' => $request->prims,
-            'remaining_prims' => $request->remaining_prims,
-            'date_buy' => $request->date_buy,
-        ]);
+        $validate = $request->validated();
+        $validate['owner'] = $request->owner ?? null;
 
-        return response()->json(['land' => $landId]);
+        $land = Land::find($request->id);
+        $land->forceFill($validate)->save();
+        $land->pictures;
+
+        return response()->json(['land' => $land], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * upload all images
+     * * 200 [land]
+     * * 401 [message]
+     * * 422 [message, errors=>nameinput]
+     *
+     * @return JsonResponse
+     */
+    public function uploadFiles(Request $request)
+    {
+        $request->validate(['images' => 'required']);
+        $land = Land::find($request->id);
+
+        foreach ($request->file('images') as $image) {
+            $extension = $image->extension();
+            $nameImage = $land->id . 'land' . uniqid() . '.' . $extension;
+
+            $path = $image->storeAs(
+                'public/images/lands',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => false,
+            ]);
+
+            $land->pictures()->save($picture);
+        }
+
+        $land->pictures;
+        return response()->json(['land' => $land]);
+    }
+
+    /**
+     * delete land.
+     * * 200 [message, delete]
+     * * 401 [message]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request): JsonResponse
     {
-        $landId = Land::find($id);
-        $landId->delete(); 
+        $land = Land::find($request->id);
+        if ($land->houses()) {
+            return response()->json([
+                'message' => 'Ce terrain contient des maisons, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+        // delete all image file in project
+        foreach ($land->pictures as $picture) {
+            Storage::delete($picture->picture_url);
+        }
+        // delete all image in database
+        $land->pictures()->delete();
+        // delete land
+        $land->delete();
+
+        return response()->json([
+            'message' => 'Le terrain a bien été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }
