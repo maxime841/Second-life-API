@@ -23,6 +23,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //Creation des club dancer dj party
+        $this->call([
+            ClubSeeder::class,
+            PartySeeder::class,
+            DjSeeder::class,
+            DancerSeeder::class,
+        )];
+        
         // create role
         Role::factory()->create([
             'libelle' => 'root',

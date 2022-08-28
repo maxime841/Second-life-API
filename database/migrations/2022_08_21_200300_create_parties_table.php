@@ -19,12 +19,6 @@ return new class extends Migration
             $table->string('owner');
             $table->date('date_party');
 
-            $table->integer('dj_id')->nullable();
-            $table->integer('dj1_id')->nullable();
-            $table->integer('dancer_id')->nullable();
-            $table->integer('dancer1_id')->nullable();
-            $table->integer('dancer2_id')->nullable();
-            $table->integer('dancer3_id')->nullable();
             $table->timestamps();
         });
     }

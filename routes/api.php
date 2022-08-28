@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\DjController;
+use App\Http\Controllers\ClubController;
+use App\Http\Controllers\PartyController;
+use App\Http\Controllers\DancerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\RoleController;
@@ -20,7 +25,7 @@ use App\Http\Controllers\PictureController;
 |
 */
 
-/**********************
+/***********************
  *** AUTHENTICATION ****
 /******************* */
 
@@ -128,7 +133,47 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('isadmin');
     Route::get('picture/{id}/update/{favori}', [PictureController::class, 'updateFavori'])
         ->middleware('isadmin');
-});
+        
+    // route clubs
+    Route::post('club/create', [ClubController::class, 'create'])
+    ->middleware('ismanagerclub');
+    Route::put('club/update/{id}', [ClubController::class, 'update'])
+    ->middleware('ismanagerclub');
+    Route::delete('club/delete/{id}', [ClubController::class, 'delete'])
+    ->middleware('ismanagerclub');
+    Route::post('club/uploads/{id}', [ClubController::class, 'uploadFiles'])
+    ->middleware('ismanagerclub');
+
+    // route parties
+    Route::post('party/create', [PartyController::class, 'create'])
+    /*->middleware('ismanagerclub')*/;
+    Route::put('party/update/{id}', [PartyController::class, 'update'])
+    /*->middleware('ismanagerclub')*/;
+    Route::delete('party/delete/{id}', [PartyController::class, 'delete'])
+    /*->middleware('ismanagerclub')*/;
+    Route::post('party/uploads/{id}', [PartyController::class, 'uploadFiles'])
+    /*->middleware('ismanagerclub')*/;
+
+    // route dj
+    Route::post('dj/create', [DjController::class, 'create'])
+    /*->middleware('ismanagerclub')*/;
+    Route::put('dj/update/{id}', [DjController::class, 'update'])
+    /*->middleware('ismanagerclub')*/;
+    Route::delete('dj/delete/{id}', [DjController::class, 'delete'])
+    /*->middleware('ismanagerclub')*/;
+    Route::post('dj/uploads/{id}', [DjController::class, 'uploadFiles'])
+    /*->middleware('ismanagerclub')*/;
+
+    // route dancer
+    Route::post('dancer/create', [DancerController::class, 'create'])
+    /*->middleware('ismanagerclub')*/;
+    Route::put('dancer/update/{id}', [DancerController::class, 'update'])
+    /*->middleware('ismanagerclub')*/;
+    Route::delete('dancer/delete/{id}', [DancerController::class, 'delete'])
+    /*->middleware('ismanagerclub')*/;
+    Route::post('dancer/uploads/{id}', [DancerController::class, 'uploadFiles'])
+    /*->middleware('ismanagerclub')*/;
+    });
 
 /********************
  *** NOT CONNECTED ***
@@ -145,3 +190,20 @@ Route::get('tenant/{id}', [TenantController::class, 'getOne']);
 // route houses
 Route::get('houses', [HouseController::class, 'getAll']);
 Route::get('house/{id}', [HouseController::class, 'getOne']);
+
+//Route club
+Route::get('club', [ClubController::class, 'getAll']);
+Route::get('club/{id}', [ClubController::class, 'getOne']);
+
+//Route dj
+Route::get('/dj', [DjController::class, 'getAll']);
+Route::get('/dj/{id}', [DjController::class, 'getOne']);
+
+//Route dancer
+Route::get('/dancer', [DancerController::class, 'getAll']);
+Route::get('/dancer/{id}', [DancerController::class, 'getOne']);
+
+//Route party
+Route::get('/party', [PartyController::class, 'getAll']);
+Route::get('/party/{id}', [PartyController::class, 'getOne']);
+
