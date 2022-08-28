@@ -7,7 +7,9 @@ use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\PartyCreateRequest;
+use App\Http\Requests\PartyUpdateRequest;
 
 class PartyController extends Controller
 {
@@ -98,15 +100,15 @@ class PartyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClubUpdateRequest $request): JsonResponse
+    public function update(PartyUpdateRequest $request): JsonResponse
     {
         $validate = $request->validated();
 
-        $club = Club::find($request->id);
-        $club->forceFill($validate)->save();
-        $club->pictures;
+        $party = Party::find($request->id);
+        $party->forceFill($validate)->save();
+        $party->pictures;
 
-        return response()->json(['club' => $club], 200);
+        return response()->json(['party' => $party], 200);
     }
 
     /**
@@ -120,14 +122,14 @@ class PartyController extends Controller
     public function uploadFiles(Request $request)
     {
         $request->validate(['images' => 'required']);
-        $club = Club::find($request->id);
+        $party = Party::find($request->id);
 
         foreach ($request->file('images') as $image) {
             $extension = $image->extension();
-            $nameImage = $club->id . 'club' . uniqid() . '.' . $extension;
+            $nameImage = $party->id . 'club' . uniqid() . '.' . $extension;
 
             $path = $image->storeAs(
-                'public/images/clubs',
+                'public/images/parties',
                 $nameImage
             );
 
@@ -137,11 +139,11 @@ class PartyController extends Controller
                 'favori' => false,
             ]);
 
-            $club->pictures()->save($picture);
+            $party->pictures()->save($picture);
         }
 
-        $club->pictures;
-        return response()->json(['club' => $club]);
+        $party->pictures;
+        return response()->json(['party' => $party]);
     }
 
     /**
@@ -154,39 +156,32 @@ class PartyController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $club = Club::find($request->id);
-        if ($club->djs()->exists()) {
+        $party = Party::find($request->id);
+        if ($party->djs()->exists()) {
             return response()->json([
-                'message' => 'Ce club contient des djs, impossible de le supprimer',
+                'message' => 'Cette soirée contient des djs, impossible de la supprimer',
                 'delete' => false,
             ], 200);
         }
 
-        else if ($club->dancers()->exists()) {
+        else if ($party->dancers()->exists()) {
             return response()->json([
-                'message' => 'Ce club contient des danseurs, impossible de le supprimer',
-                'delete' => false,
-            ], 200);
-        }
-
-        else if ($club->parties()->exists()) {
-            return response()->json([
-                'message' => 'Ce club contient des soirées, impossible de le supprimer',
+                'message' => 'Cette soirée contient des danseurs, impossible de la supprimer',
                 'delete' => false,
             ], 200);
         }
 
         // delete all image file in project
-        foreach ($club->pictures as $picture) {
+        foreach ($party->pictures as $picture) {
             Storage::delete($picture->picture_url);
         }
         // delete all image in database
-        $club->pictures()->delete();
+        $party->pictures()->delete();
         // delete club
-        $club->delete();
+        $party->delete();
 
         return response()->json([
-            'message' => 'Le club a bien été supprimé',
+            'message' => 'La soirée a bien été supprimée',
             'delete' => true,
         ], 200);
     }

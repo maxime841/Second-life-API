@@ -42,6 +42,16 @@ Route::delete('party/delete/{id}', [PartyController::class, 'delete'])
 Route::post('party/uploads/{id}', [PartyController::class, 'uploadFiles'])
 /*->middleware('ismanagerclub')*/;
 
+// route dj
+Route::post('dj/create', [DjController::class, 'create'])
+/*->middleware('ismanagerclub')*/;
+Route::put('dj/update/{id}', [DjController::class, 'update'])
+/*->middleware('ismanagerclub')*/;
+Route::delete('dj/delete/{id}', [DjController::class, 'delete'])
+/*->middleware('ismanagerclub')*/;
+Route::post('dj/uploads/{id}', [DjController::class, 'uploadFiles'])
+/*->middleware('ismanagerclub')*/;
+
 /********************
  *** NOT CONNECTED ***
 /***************** */
@@ -51,8 +61,8 @@ Route::get('club', [ClubController::class, 'getAll']);
 Route::get('club/{id}', [ClubController::class, 'getOne']);
 
 //Route dj
-//Route::get('/dj', [DjController::class, 'getAll']);
-//Route::get('/dj/:id', [DjController::class, 'getOne']);
+Route::get('/dj', [DjController::class, 'getAll']);
+Route::get('/dj/{id}', [DjController::class, 'getOne']);
 
 //Route dancer
 //Route::get('/dancer', [DancerController::class, 'getAll']);

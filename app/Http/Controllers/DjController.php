@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dj;
+use App\Models\Picture;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\DjCreateRequest;
+use App\Http\Requests\DjUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 class DjController extends Controller
 {
@@ -13,7 +18,7 @@ class DjController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll(): JsonResponse
     {
         $djs = Dj::all();
         foreach ($djs as $dj) {
@@ -26,36 +31,13 @@ class DjController extends Controller
         return response()->json(['djs' => $djs]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        
-       // $dj = Dj::create($request->all());
-       // return redirect()->route('dj.index', [$dj]);
-    }
-
-    /**
+     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getOne($id): JsonResponse
     {
         $dj =  Dj::find($id);
         foreach ($dj->pictures as $picture){
@@ -67,14 +49,38 @@ class DjController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for creating a new resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function create(DjCreateRequest $request): JsonResponse
     {
-        //
+        $validate = $request->validated();
+        $dj = Dj::create($validate);
+    
+        // for image upload on create dj
+        if ($request->image) {
+            $file = $request->file('image');
+            $extension = $file->extension();
+            $nameImage = $dj->id . 'dj' . uniqid() . '.' . $extension;
+
+            $path = $request->file('image')->storeAs(
+                'public/images/djs',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => true,
+            ]);
+
+            $dj->pictures()->save($picture);
+        }
+
+        $dj->pictures;
+
+        return response()->json(['dj' => $dj], 201);
     }
 
     /**
@@ -84,16 +90,47 @@ class DjController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DjUpdateRequest $request, $id): JsonResponse
     {
-        $djId = Dj::find($id);
-        $djId->update([
-            'name' => $request->name,
-            'style' => $request->style,
-            'date_entrance' => $request->date_entrance,
-        ]);
+        $validate = $request->validated();
 
-        return response()->json(['dj' => $djId]);
+        $dj = Dj::find($request->id);
+        $dj->forceFill($validate)->save();
+        $dj->pictures;
+
+        return response()->json(['dj' => $dj], 200);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */public function uploadFiles(Request $request)
+     {
+        $request->validate(['images' => 'required']);
+        $dj = Dj::find($request->id);
+
+        foreach ($request->file('images') as $image) {
+            $extension = $image->extension();
+            $nameImage = $dj->id . 'dj' . uniqid() . '.' . $extension;
+
+            $path = $image->storeAs(
+                'public/images/djs',
+                $nameImage
+            );
+
+            $picture = Picture::create([
+                'name' => $nameImage,
+                'picture_url' => $path,
+                'favori' => false,
+            ]);
+
+            $dj->pictures()->save($picture);
+        }
+
+        $dj->pictures;
+        return response()->json(['dj' => $dj]);
     }
 
     /**
@@ -102,9 +139,28 @@ class DjController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request): JsonResponse
     {
-        $djId = Dj::find($id);
-        $djId->delete();
+        $dj = Dj::find($request->id);
+        if ($dj->parties()->exists()) {
+            return response()->json([
+                'message' => 'Ce dj appartient à une soirée, impossible de le supprimer',
+                'delete' => false,
+            ], 200);
+        }
+
+        // delete all image file in project
+        foreach ($dj->pictures as $picture) {
+            Storage::delete($picture->picture_url);
+        }
+        // delete all image in database
+        $dj->pictures()->delete();
+        // delete club
+        $dj->delete();
+
+        return response()->json([
+            'message' => 'Le dj a bien été supprimé',
+            'delete' => true,
+        ], 200);
     }
 }
