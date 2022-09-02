@@ -136,43 +136,43 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         
     // route clubs
     Route::post('club/create', [ClubController::class, 'create'])
-    ->middleware('ismanagerclub');
+    ->middleware('managerclub');
     Route::put('club/update/{id}', [ClubController::class, 'update'])
-    ->middleware('ismanagerclub');
+    ->middleware('managerclub');
     Route::delete('club/delete/{id}', [ClubController::class, 'delete'])
-    ->middleware('ismanagerclub');
+    ->middleware('managerclub');
     Route::post('club/uploads/{id}', [ClubController::class, 'uploadFiles'])
-    ->middleware('ismanagerclub');
+    ->middleware('managerclub');
 
     // route parties
     Route::post('party/create', [PartyController::class, 'create'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerclub');
     Route::put('party/update/{id}', [PartyController::class, 'update'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerclub');
     Route::delete('party/delete/{id}', [PartyController::class, 'delete'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerclub');
     Route::post('party/uploads/{id}', [PartyController::class, 'uploadFiles'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerclub');
 
     // route dj
     Route::post('dj/create', [DjController::class, 'create'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdj');
     Route::put('dj/update/{id}', [DjController::class, 'update'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdj');
     Route::delete('dj/delete/{id}', [DjController::class, 'delete'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdj');
     Route::post('dj/uploads/{id}', [DjController::class, 'uploadFiles'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdj');
 
     // route dancer
     Route::post('dancer/create', [DancerController::class, 'create'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdancer');
     Route::put('dancer/update/{id}', [DancerController::class, 'update'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdancer');
     Route::delete('dancer/delete/{id}', [DancerController::class, 'delete'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdancer');
     Route::post('dancer/uploads/{id}', [DancerController::class, 'uploadFiles'])
-    /*->middleware('ismanagerclub')*/;
+    ->middleware('managerdancer');
     });
 
 /********************
