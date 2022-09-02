@@ -155,32 +155,31 @@ class ClubController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $club = Club::find($request->id);
+        $club = Club::findOrFail($request->id);
         if ($club->djs()->exists()) {
             return response()->json([
                 'message' => 'Ce club contient des djs, impossible de le supprimer',
                 'delete' => false,
             ], 200);
-        }
-
-        else if ($club->dancers()->exists()) {
+        } else if ($club->dancers()->exists()) {
             return response()->json([
                 'message' => 'Ce club contient des danseurs, impossible de le supprimer',
                 'delete' => false,
             ], 200);
-        }
-
-        else if ($club->parties()->exists()) {
+        } else if ($club->parties()->exists()) {
             return response()->json([
                 'message' => 'Ce club contient des soirées, impossible de le supprimer',
                 'delete' => false,
             ], 200);
         }
 
-        // delete all image file in project
-        foreach ($club->pictures as $picture) {
-            Storage::delete($picture->picture_url);
+        if (count($club->pictures)) {
+            // delete all image file in project
+            foreach ($club->pictures as $picture) {
+                Storage::delete($picture->picture_url);
+            }
         }
+
         // delete all image in database
         $club->pictures()->delete();
         // delete club

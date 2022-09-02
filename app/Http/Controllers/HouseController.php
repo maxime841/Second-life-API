@@ -217,10 +217,14 @@ class HouseController extends Controller
     public function delete(Request $request): JsonResponse
     {
         $house = House::findOrFail($request->id);
-        // delete all image file in project
-        foreach ($house->pictures as $picture) {
-            Storage::delete($picture->picture_url);
+
+        if (count($house->pictures)) {
+            // delete all image file in project
+            foreach ($house->pictures as $picture) {
+                Storage::delete($picture->picture_url);
+            }
         }
+
         // delete all picture in database
         $house->pictures()->delete();
         // delete house
