@@ -319,7 +319,7 @@ class UserController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $user = User::find($request->id);
+        $user = User::findOrFail($request->id);
         if ($user->picture) {
             Storage::delete($user->picture->picture_url);
             $user->picture()->delete();

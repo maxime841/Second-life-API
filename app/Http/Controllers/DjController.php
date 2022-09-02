@@ -22,16 +22,16 @@ class DjController extends Controller
     {
         $djs = Dj::all();
         foreach ($djs as $dj) {
-            foreach ($dj->pictures as $picture){
-               if($picture->favori == true && $picture->picturable_id == $dj->id) {
-                $dj->picture = $picture;
+            foreach ($dj->pictures as $picture) {
+                if ($picture->favori == true && $picture->picturable_id == $dj->id) {
+                    $dj->picture = $picture;
                 }
             }
-        }     
+        }
         return response()->json(['djs' => $djs]);
     }
 
-     /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -40,9 +40,9 @@ class DjController extends Controller
     public function getOne($id): JsonResponse
     {
         $dj =  Dj::find($id);
-        foreach ($dj->pictures as $picture){
-            if($picture->picturable_type == 'dj') {
-             $dj->picture = $picture;
+        foreach ($dj->pictures as $picture) {
+            if ($picture->picturable_type == 'dj') {
+                $dj->picture = $picture;
             }
         }
         return response()->json(['club' => $dj]);
@@ -57,7 +57,7 @@ class DjController extends Controller
     {
         $validate = $request->validated();
         $dj = Dj::create($validate);
-    
+
         // for image upload on create dj
         if ($request->image) {
             $file = $request->file('image');
@@ -106,8 +106,8 @@ class DjController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */public function uploadFiles(Request $request)
-     {
+     */ public function uploadFiles(Request $request)
+    {
         $request->validate(['images' => 'required']);
         $dj = Dj::find($request->id);
 
@@ -141,7 +141,7 @@ class DjController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $dj = Dj::find($request->id);
+        $dj = Dj::findOrFail($request->id);
         if ($dj->parties()->exists()) {
             return response()->json([
                 'message' => 'Ce dj appartient à une soirée, impossible de le supprimer',
@@ -149,9 +149,11 @@ class DjController extends Controller
             ], 200);
         }
 
-        // delete all image file in project
-        foreach ($dj->pictures as $picture) {
-            Storage::delete($picture->picture_url);
+        if (count($dj->pictures)) {
+            // delete all image file in project
+            foreach ($dj->pictures as $picture) {
+                Storage::delete($picture->picture_url);
+            }
         }
         // delete all image in database
         $dj->pictures()->delete();

@@ -19,18 +19,18 @@ class DancerController extends Controller
      */
     public function getAll(): JsonResponse
     {
-         $dancers = Dancer::all();
+        $dancers = Dancer::all();
         foreach ($dancers as $dancer) {
-            foreach ($dancer->pictures as $picture){
-               if($picture->favori == true && $picture->picturable_id == $dancer->id) {
-                $dancer->picture = $picture;
+            foreach ($dancer->pictures as $picture) {
+                if ($picture->favori == true && $picture->picturable_id == $dancer->id) {
+                    $dancer->picture = $picture;
                 }
             }
-        }     
+        }
         return response()->json(['dancers' => $dancers]);
     }
 
-     /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -39,9 +39,9 @@ class DancerController extends Controller
     public function getOne($id): JsonResponse
     {
         $dancer =  Dancer::find($id);
-        foreach ($dancer->pictures as $picture){
-            if($picture->picturable_type == 'dancer') {
-             $dancer->picture = $picture;
+        foreach ($dancer->pictures as $picture) {
+            if ($picture->picturable_type == 'dancer') {
+                $dancer->picture = $picture;
             }
         }
         return response()->json(['dancer' => $dancer]);
@@ -56,7 +56,7 @@ class DancerController extends Controller
     {
         $validate = $request->validated();
         $dancer = Dancer::create($validate);
-    
+
         // for image upload on create dancer
         if ($request->image) {
             $file = $request->file('image');
@@ -105,8 +105,8 @@ class DancerController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */public function uploadFiles(Request $request)
-     {
+     */ public function uploadFiles(Request $request)
+    {
         $request->validate(['images' => 'required']);
         $dancer = Dancer::find($request->id);
 
@@ -140,7 +140,7 @@ class DancerController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $dancer = Dancer::find($request->id);
+        $dancer = Dancer::findOrFail($request->id);
         if ($dancer->parties()->exists()) {
             return response()->json([
                 'message' => 'Ce danseur appartient à une soirée, impossible de le supprimer',
@@ -148,10 +148,13 @@ class DancerController extends Controller
             ], 200);
         }
 
-        // delete all image file in project
-        foreach ($dancer->pictures as $picture) {
-            Storage::delete($picture->picture_url);
+        if (count($dancer->pictures)) {
+            // delete all image file in project
+            foreach ($dancer->pictures as $picture) {
+                Storage::delete($picture->picture_url);
+            }
         }
+
         // delete all image in database
         $dancer->pictures()->delete();
         // delete club
