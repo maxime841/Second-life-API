@@ -78,7 +78,8 @@ class TenantController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $tenant = Tenant::find($request->id);
+        $tenant = Tenant::findOrFail($request->id);
+
         // detach relation with house
         if ($tenant->houses()) {
             foreach ($tenant->houses as $house) {

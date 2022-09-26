@@ -13,7 +13,7 @@ use App\Http\Requests\PartyUpdateRequest;
 
 class PartyController extends Controller
 {
-     /**
+    /**
      * get all clubs.
      * * 200 [clubs]
      *
@@ -156,25 +156,26 @@ class PartyController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $party = Party::find($request->id);
+        $party = Party::findOrFail($request->id);
         if ($party->djs()->exists()) {
             return response()->json([
                 'message' => 'Cette soirée contient des djs, impossible de la supprimer',
                 'delete' => false,
             ], 200);
-        }
-
-        else if ($party->dancers()->exists()) {
+        } else if ($party->dancers()->exists()) {
             return response()->json([
                 'message' => 'Cette soirée contient des danseurs, impossible de la supprimer',
                 'delete' => false,
             ], 200);
         }
 
-        // delete all image file in project
-        foreach ($party->pictures as $picture) {
-            Storage::delete($picture->picture_url);
+        if (count($party->pictures)) {
+            // delete all image file in project
+            foreach ($party->pictures as $picture) {
+                Storage::delete($picture->picture_url);
+            }
         }
+
         // delete all image in database
         $party->pictures()->delete();
         // delete club

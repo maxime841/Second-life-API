@@ -80,13 +80,15 @@ class RoleController extends Controller
      */
     public function delete(Request $request): JsonResponse
     {
-        $role = Role::find($request->id);
+        $role = Role::findOrFail($request->id);
+
         if ($role->users()) {
             return response()->json([
                 'message' => 'Des utilisateurs ont ce role, impossible de le supprimer',
                 'delete' => false,
             ], 200);
         }
+
         $role->delete();
         return response()->json([
             'message' => 'Le role a été supprimé',
