@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
+use App\Models\House;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\LandCreateRequest;
 use App\Http\Requests\LandUpdateRequest;
-use Illuminate\Support\Facades\Storage;
 
 class LandController extends Controller
 {
@@ -30,6 +31,21 @@ class LandController extends Controller
             }
         }
         return response()->json(['lands' => $lands], 200);
+    }
+
+    /**
+     * get one land and display all houses from this land.
+     * * 200 [land]
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllHousesFromLand($id): JsonResponse
+    {
+        $land = Land::findOrFail($id);
+        $landHouses = ($land->houses);
+         return response()->json(['landHouses' => $landHouses], 200);
+        
     }
 
     /**
