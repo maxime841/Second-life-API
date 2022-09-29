@@ -100,7 +100,7 @@ class AuthController extends Controller
     {
         // get user with role
         $user = User::find($request->user()->id);
-        return response()->json(['user' => $user]);
+        return response()->json(['user' => $user, 'authenticated' => true]);
     }
 
     /**
