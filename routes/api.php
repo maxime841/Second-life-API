@@ -181,7 +181,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 // route lands
 Route::get('lands', [LandController::class, 'getAll']);
-Route::get('land/{id}/houses', [LandController::class, 'getAllHousesFromLand']);
 Route::get('land/{id}', [LandController::class, 'getOne']);
 
 // route tenants

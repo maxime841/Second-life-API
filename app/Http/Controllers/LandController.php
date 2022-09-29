@@ -34,21 +34,6 @@ class LandController extends Controller
     }
 
     /**
-     * get one land and display all houses from this land.
-     * * 200 [land]
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function getAllHousesFromLand($id): JsonResponse
-    {
-        $land = Land::findOrFail($id);
-        $landHouses = ($land->houses);
-         return response()->json(['landHouses' => $landHouses], 200);
-        
-    }
-
-    /**
      * get one land.
      * * 200 [land]
      *
@@ -62,6 +47,7 @@ class LandController extends Controller
             if ($picture->favori == true) {
                 $land->picture_favoris = $picture;
             }
+            ($land -> houses);
         }
         return response()->json(['land' => $land], 200);
     }
