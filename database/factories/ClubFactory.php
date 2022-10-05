@@ -19,6 +19,7 @@ class ClubFactory extends Factory
         return [
             "name" =>fake()->name(),
             "owner" => fake()->name(),
+            "presentation" =>fake()->text()
         ];
     }
 }
