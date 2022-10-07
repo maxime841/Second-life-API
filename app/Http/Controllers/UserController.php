@@ -230,7 +230,7 @@ class UserController extends Controller
     {
         return request()->wantsJson()
             ? new JsonResponse('', 204)
-            : redirect(url(env('APP_FRONT_URL_UPDATE_FORGOT_PASSWORD') . '?token=' . $token . '?email=' . $request->email));
+            : redirect(url(env('APP_FRONT_URL_UPDATE_FORGOT_PASSWORD') . '?token=' . $token . '&email=' . $request->email));
     }
 
     /**
