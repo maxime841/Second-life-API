@@ -35,7 +35,7 @@ class ClubController extends Controller
                 foreach ($party->pictures as $picture) {
                     // filter favoris picture of party
                     if ($picture->favori == true) {
-                        $party->picture_favoris = $picture;
+                        $party->picture = $picture;
                     }
                 }
             };
@@ -64,7 +64,7 @@ class ClubController extends Controller
                  foreach ($party->pictures as $picture) {
                      // filter favoris picture of party
                      if ($picture->favori == true) {
-                         $party->picture_favoris = $picture;
+                         $party->picture = $picture;
                      }
                  }
              };
