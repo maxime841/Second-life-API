@@ -28,6 +28,9 @@ class ClubController extends Controller
                     $club->picture = $picture;
                 }
             }
+            $club->dancers;
+            $club->djs;
+
             // recover party
             $club->parties;
             // recover pictures of party
@@ -57,17 +60,17 @@ class ClubController extends Controller
             if ($picture->favori == true) {
                 $club->picture = $picture;
             }
-             // recover party
-             $club->parties;
-             // recover pictures of party
-             foreach ($club->parties as $party) {
-                 foreach ($party->pictures as $picture) {
-                     // filter favoris picture of party
-                     if ($picture->favori == true) {
-                         $party->picture = $picture;
-                     }
-                 }
-             };
+            // recover party
+            $club->parties;
+            // recover pictures of party
+            foreach ($club->parties as $party) {
+                foreach ($party->pictures as $picture) {
+                    // filter favoris picture of party
+                    if ($picture->favori == true) {
+                        $party->picture = $picture;
+                    }
+                }
+            };
         }
         return response()->json(['club' => $club], 200);
     }
