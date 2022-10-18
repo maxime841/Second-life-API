@@ -54,10 +54,10 @@ class AuthController extends Controller
         $user = User::where('email', $validate['email'])->first();
 
         // is email verified
-        // comment this "if", if is not email verified
+        /* comment this "if", if is not email verified
         if ($user->email_verified_at == null) {
             return $this->authService->accessTokenVerified($user, $validate['password']);
-        }
+        }*/
 
         // is not email verified
         return $this->authService->accessToken($user, $validate['password']);
