@@ -69,7 +69,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->middleware('ispublic');
     Route::put('user/profil/update', [UserController::class, 'updateProfil'])
         ->middleware('ispublic');
-    Route::post('user/profil/update/password', [UserController::class, 'updatePassword'])
+    Route::put('user/profil/update/password', [UserController::class, 'updatePassword'])
         ->middleware('ispublic');
     Route::get('users', [UserController::class, 'getAll'])->middleware('isadmin');
     Route::get('user/{id}', [UserController::class, 'getOne'])->middleware('isadmin');
